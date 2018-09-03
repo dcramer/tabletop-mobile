@@ -34,7 +34,7 @@ const GQL_GET_VIEWER = gql`
 
 export const fetchSession = async () => {
   try {
-    let session = await AsyncStorage.getItem('@cask:auth');
+    let session = await AsyncStorage.getItem('@tabletop:auth');
     if (!session) return {};
     return await JSON.parse(session);
   } catch (e) {
@@ -44,12 +44,12 @@ export const fetchSession = async () => {
 };
 
 export const storeSession = async session => {
-  await AsyncStorage.setItem(`@cask:auth`, JSON.stringify(session));
+  await AsyncStorage.setItem(`@tabletop:auth`, JSON.stringify(session));
 };
 
 export const clearSession = async () => {
   try {
-    await AsyncStorage.removeItem(`@cask:auth`);
+    await AsyncStorage.removeItem(`@tabletop:auth`);
   } catch (e) {}
 };
 
@@ -149,7 +149,7 @@ export function loginFailure(error) {
   return async dispatch => {
     Sentry.captureException(error);
 
-    await AsyncStorage.removeItem('@cask:auth');
+    await AsyncStorage.removeItem('@tabletop:auth');
 
     return dispatch({
       type: LOGIN_FAILURE,

@@ -23,7 +23,7 @@
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
-                                                      moduleName:@"cask"
+                                                      moduleName:@"tabletop"
                                                initialProperties:nil
                                                    launchOptions:launchOptions];
 

@@ -2,7 +2,7 @@ platform :ios, '10.0'
 
 install! 'cocoapods', :deterministic_uuids => false
 
-target 'cask' do
+target 'tabletop' do
   # use_frameworks!
 
   pod 'React', :path => '../node_modules/react-native', :subspecs => [

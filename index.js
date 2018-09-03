@@ -35,4 +35,4 @@ class RootApp extends Component {
     );
   }
 }
-AppRegistry.registerComponent('cask', () => RootApp);
+AppRegistry.registerComponent('tabletop', () => RootApp);
