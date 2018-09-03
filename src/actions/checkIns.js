@@ -8,21 +8,11 @@ import api from '../api';
 const GQL_CHECKIN_FRAGMENT = gql`
   fragment CheckInFragment on CheckIn {
     id
-    bottle {
-      id
-      name
-      distillery {
-        id
-        name
-      }
-    }
-    location {
+    game {
       id
       name
     }
-    rating
-    notes
-    createdBy {
+    players {
       id
       name
     }
@@ -40,8 +30,14 @@ const GQL_LIST_CHECKINS = gql`
 `;
 
 const GQL_ADD_CHECKIN = gql`
-  mutation AddCheckIn($bottle: UUID!, $notes: String, $rating: Decimal, $location: UUID) {
-    addCheckIn(bottle: $bottle, notes: $notes, rating: $rating, location: $location) {
+  mutation AddCheckIn(
+    $game: UUID!
+    $notes: String
+    $rating: Decimal
+    $players: [UUID]
+    $winners: [UUID]
+  ) {
+    addCheckIn(game: $game, notes: $notes, rating: $rating, player: $players, winners: $winners) {
       ok
       errors
       checkIn {
