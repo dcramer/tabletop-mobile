@@ -1,0 +1,51 @@
+{
+    "files.exclude": {
+        "**/*.min.js": true,
+        "**/*.js.map": true,
+        "node_modules": true,
+        "htmlcov": true,
+        "*.log": true,
+        ".vscode/tags": true,
+        ".vscode/.react": true
+    },
+    "files.trimTrailingWhitespace": false,
+    "files.trimFinalNewlines": false,
+    "files.insertFinalNewline": true,
+
+    "prettier.requireConfig": true,
+
+    "eslint.options": {
+        "configFile": ".eslintrc"
+    },
+
+    "[css]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 2,
+        "editor.formatOnSave": true
+    },
+
+    "[html]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 2,
+        "editor.formatOnSave": true
+    },
+
+    "[javascript]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 2,
+        "editor.formatOnSave": true
+    },
+
+    "[json]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 2,
+        "editor.formatOnSave": true
+    },
+
+    "[typescript]": {
+        "editor.detectIndentation": false,
+        "editor.tabSize": 2,
+        "editor.formatOnSave": true
+    },
+
+}

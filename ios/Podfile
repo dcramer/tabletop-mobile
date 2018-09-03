@@ -1,0 +1,42 @@
+platform :ios, '10.0'
+
+install! 'cocoapods', :deterministic_uuids => false
+
+target 'cask' do
+  # use_frameworks!
+
+  pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    'Core',
+    'CxxBridge',
+    'DevSupport',
+    'RCTAnimation', # Needed for FlatList and animations running on native UI thread
+    'RCTGeolocation',
+    'RCTText',
+    'RCTNetwork',
+    'RCTWebSocket', # Needed for debugging
+  ]
+
+  pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
+  pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
+  pod 'Folly', :podspec => '../node_modules/react-native/third-party-podspecs/Folly.podspec'
+
+  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+
+  pod 'FBSDKCoreKit'
+  pod 'FBSDKLoginKit'
+  pod 'FBSDKShareKit'
+  pod 'FBSDKPlacesKit'
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'SentryReactNative', :path => '../node_modules/react-native-sentry'
+
+  # https://github.com/invertase/react-native-firebase/issues/414#issuecomment-331128610
+  post_install do |installer|
+    installer.pods_project.targets.each do |target|
+      if target.name == "React"
+        target.remove_from_project
+      end
+    end
+  end
+end
