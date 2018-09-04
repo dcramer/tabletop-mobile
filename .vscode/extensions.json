@@ -1,17 +1,17 @@
 {
-    // See http://go.microsoft.com/fwlink/?LinkId=827846
-    // for the documentation about the extensions.json format
-    "recommendations": [
-        "dzannotti.vscode-babel-coloring",
-        "esbenp.prettier-vscode",
-        "vsmobile.vscode-react-native",
-        "dbaeumer.vscode-eslint",
-        "lextudio.restructuredtext",
-        "PeterJausovec.vscode-docker",
-        "DavidAnson.vscode-markdownlint",
-        "toba.vsfire",
-        "smkamranqadri.vscode-bolt-language",
-        "eg2.tslint",
-        "zhouronghui.propertylist"
-    ]
+  // See http://go.microsoft.com/fwlink/?LinkId=827846
+  // for the documentation about the extensions.json format
+  "recommendations": [
+    "dzannotti.vscode-babel-coloring",
+    "esbenp.prettier-vscode",
+    "vsmobile.vscode-react-native",
+    "dbaeumer.vscode-eslint",
+    "lextudio.restructuredtext",
+    "PeterJausovec.vscode-docker",
+    "DavidAnson.vscode-markdownlint",
+    "toba.vsfire",
+    "smkamranqadri.vscode-bolt-language",
+    "eg2.tslint",
+    "zhouronghui.propertylist"
+  ]
 }
