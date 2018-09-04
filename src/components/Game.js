@@ -93,6 +93,7 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     flex: 1,
+    alignSelf: 'center',
     height: undefined,
     width: undefined,
   },

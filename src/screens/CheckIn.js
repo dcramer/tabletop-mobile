@@ -124,9 +124,9 @@ class CheckIn extends Component {
     this.state = {
       notes: '',
       rating: 0,
-      friends: [],
-      location: null,
-      flavorProfile: [],
+      players: [],
+      winners: [],
+      tags: [],
       submitting: false,
     };
   }

@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import { ADD_GAME_SUCCESS, ADD_GAME_FAILURE } from '../reducers/games';
 import api from '../api';
 
-const GQL_GAME_FRAGMENT = gql`
+export const GQL_GAME_FRAGMENT = gql`
   fragment GameFragment on Game {
     id
     name
@@ -19,7 +19,7 @@ const GQL_GAME_FRAGMENT = gql`
   }
 `;
 
-const GQL_LIST_GAMES = gql`
+export const GQL_LIST_GAMES = gql`
   query Game($query: String) {
     games(query: $query) {
       ...GameFragment
@@ -28,7 +28,7 @@ const GQL_LIST_GAMES = gql`
   ${GQL_GAME_FRAGMENT}
 `;
 
-const GQL_ADD_GAME = gql`
+export const GQL_ADD_GAME = gql`
   mutation AddGame(
     $name: String!
     $publisher: UUID!

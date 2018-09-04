@@ -2,15 +2,14 @@ import { Sentry } from 'react-native-sentry';
 import gql from 'graphql-tag';
 
 import { CHECK_IN_SUCCESS, CHECK_IN_FAILURE } from '../reducers/checkIns';
-
+import { GQL_GAME_FRAGMENT } from './games';
 import api from '../api';
 
 const GQL_CHECKIN_FRAGMENT = gql`
   fragment CheckInFragment on CheckIn {
     id
     game {
-      id
-      name
+      ...GameFragment
     }
     players {
       id
@@ -18,6 +17,7 @@ const GQL_CHECKIN_FRAGMENT = gql`
     }
     createdAt
   }
+  ${GQL_GAME_FRAGMENT}
 `;
 
 const GQL_LIST_CHECKINS = gql`
@@ -37,7 +37,7 @@ const GQL_ADD_CHECKIN = gql`
     $players: [UUID]
     $winners: [UUID]
   ) {
-    addCheckIn(game: $game, notes: $notes, rating: $rating, player: $players, winners: $winners) {
+    addCheckIn(game: $game, notes: $notes, rating: $rating, players: $players, winners: $winners) {
       ok
       errors
       checkIn {

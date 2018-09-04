@@ -30,10 +30,10 @@ class Friend extends Component {
     }
     return (
       <Card onPress={onPress} style={styles.container}>
-        {user.photoURL ? (
+        {user.avatar ? (
           <Image
             source={{
-              uri: user.photoURL,
+              uri: user.avatar,
             }}
             style={styles.userPhoto}
             resizeMode="contain"
@@ -41,7 +41,7 @@ class Friend extends Component {
         ) : (
           <Icon name="user-circle" size={24} style={styles.userPhoto} />
         )}
-        <Text style={styles.userName}>{user.displayName}</Text>
+        <Text style={styles.userName}>{user.name}</Text>
       </Card>
     );
   }

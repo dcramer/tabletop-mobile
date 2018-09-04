@@ -2,7 +2,9 @@ import PropTypes from 'prop-types';
 
 export const User = PropTypes.shape({
   id: PropTypes.string,
-  displayName: PropTypes.string.isRequired,
+  email: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
 });
 
 export const Location = PropTypes.shape({

@@ -16,10 +16,10 @@ class PersonItem extends Component {
     let { user, style } = this.props;
     return (
       <View style={[styles.listItem, style]}>
-        {user.photoURL ? (
+        {user.avatar ? (
           <Image
             source={{
-              uri: user.photoURL,
+              uri: user.avatar,
             }}
             style={styles.userPhoto}
             resizeMode="contain"

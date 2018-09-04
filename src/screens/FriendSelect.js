@@ -27,10 +27,10 @@ class UserEntry extends Component {
     return (
       <TouchableOpacity onPress={onPress} activeOpacity={1}>
         <Card style={styles.cardContainer}>
-          {user.photoURL ? (
+          {user.avatar ? (
             <Image
               source={{
-                uri: user.photoURL,
+                uri: user.avatar,
               }}
               style={styles.userPhoto}
               resizeMode="contain"
@@ -38,7 +38,7 @@ class UserEntry extends Component {
           ) : (
             <Icon name="user-circle" size={24} style={styles.userPhoto} />
           )}
-          <Text style={styles.userName}>{user.displayName}</Text>
+          <Text style={styles.userName}>{user.name}</Text>
           <Icon
             name={selected ? 'check-square' : 'square'}
             size={24}

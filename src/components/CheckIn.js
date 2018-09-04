@@ -48,15 +48,15 @@ class CheckIn extends Component {
 
   render() {
     let { checkIn } = this.props;
-    let { game, location, createdBy } = checkIn;
+    let { game, players } = checkIn;
     return (
       <Card style={styles.cardContainer} onPress={this.props.canPress ? this.goToCheckIn : null}>
         <View style={styles.header}>
           <TouchableOpacity onPress={this.goToProfile} style={styles.user}>
-            {createdBy.photoURL ? (
+            {players[0].avatar ? (
               <Image
                 source={{
-                  uri: createdBy.photoURL,
+                  uri: players[0].avatar,
                 }}
                 style={styles.userPhoto}
                 resizeMode="contain"
@@ -65,17 +65,12 @@ class CheckIn extends Component {
               <Icon name="user-circle" size={24} style={styles.userPhoto} />
             )}
             <Text style={styles.userName} numberOfLines={2} ellipsizeMode={'tail'}>
-              {createdBy.name}
+              {players[0].name}
             </Text>
           </TouchableOpacity>
           <Text style={styles.timestamp}>
             {!!checkIn.createdAt && <TimeAgo time={checkIn.createdAt} />}
           </Text>
-          {!!location && (
-            <Text style={styles.location} numberOfLines={1} ellipsizeMode={'tail'}>
-              {location.name}
-            </Text>
-          )}
         </View>
         <Game game={game} style={styles.gameCard} />
         {!!checkIn.rating && (
