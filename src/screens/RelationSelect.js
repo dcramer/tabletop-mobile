@@ -5,7 +5,6 @@ import { withNavigation } from 'react-navigation';
 import { Sentry } from 'react-native-sentry';
 
 import { colors } from '../styles';
-import { getDistilleries } from '../actions/distilleries';
 import AlertCard from '../components/AlertCard';
 import Card from '../components/Card';
 import ModalHeader from '../components/ModalHeader';
@@ -85,9 +84,9 @@ class SearchResults extends Component {
         {!!this.props.query && (
           <AlertCard
             onPress={() => {
-              this.props.navigation.navigate('AddDistillery');
+              this.props.navigation.navigate('AddPublisher', { name: this.props.query });
             }}
-            heading="Can't find a distillery?"
+            heading="Can't find a publisher?"
             subheading={`Tap here to add ${this.props.query}.`}
           />
         )}

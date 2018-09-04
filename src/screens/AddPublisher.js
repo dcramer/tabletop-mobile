@@ -4,24 +4,24 @@ import PropTypes from 'prop-types';
 import { Button } from 'react-native-elements';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 
-import { addDistillery } from '../actions/distilleries';
+import { addPublisher } from '../actions/publishers';
 import { colors, margins } from '../styles';
 import TextField from '../components/forms/TextField';
 
-class AddDistillery extends Component {
+class AddPublisher extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
 
   static navigationOptions = {
-    title: 'Add Distillery',
+    title: 'Add Publisher',
   };
 
   constructor(...args) {
     super(...args);
+    let { navigation } = this.props;
     this.state = {
-      name: '',
-      region: '',
+      name: navigation.getParam('name') || '',
     };
   }
 
@@ -36,11 +36,10 @@ class AddDistillery extends Component {
     let { navigation } = this.props;
     this.setState({ error: null, submitting: true });
     this.props
-      .addDistillery({
+      .addPublisher({
         name: state.name,
-        region: state.region,
       })
-      .then(distillery => {
+      .then(publisher => {
         navigation.goBack(null);
       })
       .catch(error => {
@@ -50,7 +49,7 @@ class AddDistillery extends Component {
 
   isValid = () => {
     let state = this.state;
-    return state.name && state.country && state.region;
+    return state.name;
   };
 
   render() {
@@ -60,15 +59,11 @@ class AddDistillery extends Component {
         <TextField
           onChangeValue={v => this.onChangeValue('name', v)}
           name="Name"
-          placeholder="e.g. Bowmore"
-        />
-        <TextField
-          onChangeValue={v => this.onChangeValue('country', v)}
-          name="Country"
-          placeholder="e.g. Scotland"
+          placeholder="e.g. Daydream Games"
+          value={this.state.name}
         />
         <Button
-          title="Add Distillery"
+          title="Add Publisher"
           onPress={this.onSubmit}
           containerViewStyle={styles.buttonContainer}
           disabled={!this.isValid() || this.state.submitting}
@@ -97,5 +92,5 @@ const styles = StyleSheet.create({
 
 export default connect(
   null,
-  { addDistillery }
-)(AddDistillery);
+  { addPublisher }
+)(AddPublisher);

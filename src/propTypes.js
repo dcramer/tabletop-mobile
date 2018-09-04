@@ -10,35 +10,33 @@ export const Location = PropTypes.shape({
   name: PropTypes.string.isRequired,
 });
 
-export const Distillery = PropTypes.shape({
+export const Publisher = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string.isRequired,
 });
 
-export const Bottle = PropTypes.shape({
+export const Game = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string.isRequired,
-  distillery: Distillery.isRequired,
-  category: PropTypes.string,
-  abv: PropTypes.number,
-  statedAge: PropTypes.number,
-  vintageYear: PropTypes.number,
-  bottleYear: PropTypes.number,
-  caskType: PropTypes.string,
-  series: PropTypes.string,
+  publisher: Publisher.isRequired,
+  minPlayers: PropTypes.number,
+  maxPlayers: PropTypes.number,
+  duration: PropTypes.number,
+  durationTyope: PropTypes.string,
 });
 
 export const CheckIn = PropTypes.shape({
   id: PropTypes.string,
-  bottle: Bottle.isRequired,
-  location: Location,
+  game: Game.isRequired,
   notes: PropTypes.string,
-  flavorProfile: PropTypes.arrayOf(PropTypes.string),
-  friends: PropTypes.arrayOf(User),
+  tags: PropTypes.arrayOf(PropTypes.string),
+  players: PropTypes.arrayOf(User),
+  winners: PropTypes.arrayOf(User),
 });
 
 export default {
-  Bottle,
   CheckIn,
+  Game,
+  Publisher,
   User,
 };

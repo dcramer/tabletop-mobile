@@ -7,15 +7,14 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { addCheckIn } from '../actions/checkIns';
 import { colors, margins } from '../styles';
-import Bottle from '../components/Bottle';
 import Card from '../components/Card';
 import FormLabel from '../components/FormLabel';
+import Game from '../components/Game';
 import PersonList from '../components/PersonList';
 import TagField from '../components/forms/TagField';
-import LocationField from '../components/forms/LocationField';
 import TextField from '../components/forms/TextField';
 
-const flavorProfileDatabase = [
+const tagDatabase = [
   { label: 'Bold', value: 'Bold' },
   { label: 'Peaty', value: 'Peaty' },
   { label: 'Wood', value: 'Wood' },
@@ -71,7 +70,7 @@ class CheckInRating extends Component {
   }
 }
 
-class CheckInFriends extends Component {
+class CheckInPlayers extends Component {
   static propTypes = {
     onChangeValue: PropTypes.func.isRequired,
   };
@@ -100,7 +99,7 @@ class CheckInFriends extends Component {
           }>
           <View style={styles.labelContainer}>
             <View style={styles.labelLeft}>
-              <FormLabel>Tag Friends</FormLabel>
+              <FormLabel>{this.props.label}</FormLabel>
             </View>
             <View style={styles.labelRight}>
               {value && <PersonList personList={value} style={styles.friendList} />}
@@ -134,8 +133,8 @@ class CheckIn extends Component {
 
   async componentDidMount() {
     let { auth, navigation } = this.props;
-    let { bottle } = navigation.state.params;
-    if (!bottle || auth.user.id) {
+    let { game } = navigation.state.params;
+    if (!game || auth.user.id) {
       navigation.navigate('Main');
     }
   }
@@ -149,16 +148,16 @@ class CheckIn extends Component {
     if (this.state.submitting) return;
     let state = this.state;
     let { navigation } = this.props;
-    let { bottle } = navigation.state.params;
+    let { game } = navigation.state.params;
     this.setState({ submitting: true });
     this.props
       .addCheckIn({
-        bottle: bottle.id,
+        game: game.id,
         notes: state.notes,
         rating: state.rating,
-        friends: state.friends.map(f => f.id),
-        location: state.location ? state.location.id : null,
-        flavorProfile: state.flavorProfile,
+        players: state.players.map(f => f.id),
+        winners: state.winners.map(f => f.id),
+        tags: state.tags,
       })
       .then(checkin => {
         navigation.popToTop();
@@ -174,30 +173,35 @@ class CheckIn extends Component {
 
   render() {
     let { navigation } = this.props;
-    let { bottle } = navigation.state.params;
+    let { game } = navigation.state.params;
     return (
       <ScrollView>
-        <Bottle navigation={this.props.navigation} bottle={bottle} />
+        <Game navigation={this.props.navigation} game={game} />
         {!!this.state.error && <Text>{this.state.error.message}</Text>}
         <TextField
           onChangeValue={v => this.onChangeValue('notes', v)}
-          name="Tasting Notes"
+          name="Notes"
           placeholder="How was it?"
         />
         <CheckInRating
           onChangeValue={v => this.onChangeValue('rating', v)}
           navigation={navigation}
         />
-        <CheckInFriends
-          onChangeValue={v => this.onChangeValue('friends', v)}
+        <CheckInPlayers
+          label="Players"
+          onChangeValue={v => this.onChangeValue('players', v)}
           navigation={navigation}
         />
-        <LocationField onChangeValue={v => this.onChangeValue('location', v)} name="Location" />
+        <CheckInPlayers
+          label="Winners"
+          onChangeValue={v => this.onChangeValue('winners', v)}
+          navigation={navigation}
+        />
         <TagField
-          onChangeValue={v => this.onChangeValue('flavorProfile', v)}
-          name="Flavor Profile"
+          onChangeValue={v => this.onChangeValue('tags', v)}
+          name="Tags"
           maxValues={5}
-          tagList={flavorProfileDatabase}
+          tagList={tagDatabase}
         />
         <Button
           title="Confirm Check-in"

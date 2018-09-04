@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 
 import auth from './auth';
-import bottles from './bottles';
+import games from './games';
 import checkIns from './checkIns';
+import publishers from './publishers';
 
 export default combineReducers({
   auth,
-  bottles,
+  games,
   checkIns,
+  publishers,
 });

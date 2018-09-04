@@ -5,8 +5,8 @@ import { createBottomTabNavigator, createStackNavigator } from 'react-navigation
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Activity from './screens/Activity';
-import AddBottle from './screens/AddBottle';
-import AddDistillery from './screens/AddDistillery';
+import AddGame from './screens/AddGame';
+import AddPublisher from './screens/AddPublisher';
 import CheckIn from './screens/CheckIn';
 import CheckInDetails from './screens/CheckInDetails';
 import RelationSelect from './screens/RelationSelect';
@@ -16,7 +16,7 @@ import LocationSelect from './screens/LocationSelect';
 import Notifications from './screens/Notifications';
 import Home from './screens/Home';
 import MyProfile from './screens/MyProfile';
-import BottleDetails from './screens/BottleDetails';
+import GameDetails from './screens/GameDetails';
 import TagSelect from './screens/TagSelect';
 import UserProfile from './screens/UserProfile';
 import Welcome from './screens/Welcome';
@@ -39,11 +39,11 @@ const commonOptions = {
 const HomeStack = createStackNavigator(
   {
     Home,
-    BottleDetails,
+    GameDetails,
     CheckInDetails,
     CheckIn,
-    AddBottle,
-    AddDistillery,
+    AddGame,
+    AddPublisher,
     FindFriends,
     UserProfile,
   },

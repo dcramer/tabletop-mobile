@@ -8,9 +8,9 @@ import { colors, margins } from '../styles';
 import CustomPropTypes from '../propTypes';
 import Card from './Card';
 
-class Bottle extends Component {
+class Game extends Component {
   static propTypes = {
-    bottle: CustomPropTypes.Bottle.isRequired,
+    game: CustomPropTypes.Game.isRequired,
     navigation: PropTypes.object.isRequired,
     style: ViewPropTypes.style,
     canPress: PropTypes.bool,
@@ -20,37 +20,39 @@ class Bottle extends Component {
     canPress: true,
   };
 
-  static getBottleName = bottle => {
-    if (bottle.name) return bottle.name;
-    return `${bottle.distillery.name} ${bottle.statedAge || ''}`;
+  static getGameName = game => {
+    return game.name;
   };
 
   _onPress = () => {
-    let { bottle, navigation } = this.props;
-    navigation.navigate('BottleDetails', { id: bottle.id, bottle });
+    let { game, navigation } = this.props;
+    navigation.navigate('GameDetails', { id: game.id, game });
   };
 
   render() {
-    let { bottle, style } = this.props;
+    let { game, style } = this.props;
     return (
       <Card
         style={[styles.cardContainer, style]}
         onPress={this.props.canPress ? this._onPress : null}>
-        {bottle.thumbnail ? (
-          <Image source={{ uri: bottle.thumbnail }} style={styles.thumbnail} resizeMode="contain" />
+        {game.thumbnail ? (
+          <Image source={{ uri: game.thumbnail }} style={styles.thumbnail} resizeMode="contain" />
         ) : (
           <Icon name="file-image" size={64} style={styles.thumbnail} color={colors.trim} />
         )}
         <View style={styles.rowText}>
           <Text style={styles.name} numberOfLines={2} ellipsizeMode={'tail'}>
-            {Bottle.getBottleName(bottle)} {!!bottle.series && bottle.series}
+            {game.name}
           </Text>
-          <Text style={styles.distillery} numberOfLines={1} ellipsizeMode={'tail'}>
-            {bottle.distillery.name}
+          <Text style={styles.publisher} numberOfLines={1} ellipsizeMode={'tail'}>
+            {game.publisher.name}
           </Text>
-          <Text style={styles.category} numberOfLines={1} ellipsizeMode={'tail'}>
-            {bottle.category} {!!bottle.statedAge && `${bottle.statedAge} yo`}
-          </Text>
+          <View style={styles.meta}>
+            <Icon name="users" size={16} style={styles.playersIcon} color={colors.default} />
+            <Text style={styles.players} numberOfLines={1} ellipsizeMode={'tail'}>
+              {game.minPlayers} - {game.maxPlayers}
+            </Text>
+          </View>
         </View>
       </Card>
     );
@@ -69,15 +71,23 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: colors.default,
   },
-  distillery: {
+  publisher: {
     paddingLeft: 10,
     marginTop: 5,
     fontSize: 14,
     color: colors.default,
   },
-  category: {
+  meta: {
+    flex: 2,
+    flexDirection: 'row',
     paddingLeft: 10,
     marginTop: 5,
+  },
+  playersIcon: {
+    marginRight: 5,
+  },
+  players: {
+    flex: 1,
     fontSize: 14,
     color: colors.default,
   },
@@ -92,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(Bottle);
+export default withNavigation(Game);

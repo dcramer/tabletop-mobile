@@ -4,33 +4,33 @@ import { Button } from 'react-native-elements';
 import { StyleSheet, ScrollView } from 'react-native';
 
 import { colors } from '../styles';
-import Bottle from '../components/Bottle';
+import Game from '../components/Game';
 
-export default class BottleDetails extends Component {
+export default class GameDetails extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
 
   static navigationOptions = ({ navigation }) => {
-    let { bottle } = navigation.state.params;
+    let { game } = navigation.state.params;
     return {
-      title: Bottle.getBottleName(bottle),
+      title: Game.getGameName(game),
     };
   };
 
   _onCheckIn = () => {
     let { navigation } = this.props;
-    let { bottle } = navigation.state.params;
-    navigation.navigate('CheckIn', { id: bottle.id, bottle });
+    let { game } = navigation.state.params;
+    navigation.navigate('CheckIn', { id: game.id, game });
   };
 
   render() {
     let { navigation } = this.props;
-    let { bottle } = navigation.state.params;
+    let { game } = navigation.state.params;
 
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <Bottle canPress={false} bottle={bottle} />
+        <Game canPress={false} game={game} />
         <Button
           title="Check-in"
           onPress={this._onCheckIn}

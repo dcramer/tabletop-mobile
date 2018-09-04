@@ -7,7 +7,7 @@ import TimeAgo from 'react-native-timeago';
 
 import { colors, margins } from '../styles';
 import CustomPropTypes from '../propTypes';
-import Bottle from './Bottle';
+import Game from './Game';
 import Card from './Card';
 
 class Rating extends Component {
@@ -48,7 +48,7 @@ class CheckIn extends Component {
 
   render() {
     let { checkIn } = this.props;
-    let { bottle, location, createdBy } = checkIn;
+    let { game, location, createdBy } = checkIn;
     return (
       <Card style={styles.cardContainer} onPress={this.props.canPress ? this.goToCheckIn : null}>
         <View style={styles.header}>
@@ -77,7 +77,7 @@ class CheckIn extends Component {
             </Text>
           )}
         </View>
-        <Bottle bottle={bottle} style={styles.bottleCard} />
+        <Game game={game} style={styles.gameCard} />
         {!!checkIn.rating && (
           <View style={styles.ratingContainer}>
             <Rating value={checkIn.rating} maxValue={5} />
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: colors.trim,
   },
-  bottleCard: {
+  gameCard: {
     borderWidth: 1,
     borderColor: colors.trim,
     borderRadius: 4,

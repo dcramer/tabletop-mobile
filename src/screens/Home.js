@@ -5,15 +5,15 @@ import { Sentry } from 'react-native-sentry';
 import { StyleSheet, FlatList, Text, View } from 'react-native';
 
 import { colors, layout, margins } from '../styles';
-import { getBottles } from '../actions/bottles';
+import { getGames } from '../actions/games';
 import Activity from '../components/Activity';
 import AlertCard from '../components/AlertCard';
-import Bottle from '../components/Bottle';
+import Game from '../components/Game';
 import LoadingIndicator from '../components/LoadingIndicator';
 import SearchBar from '../components/SearchBar';
 
 class SearchResults extends Component {
-  _renderItem = ({ item }) => <Bottle bottle={item} />;
+  _renderItem = ({ item }) => <Game game={item} />;
 
   _keyExtractor = item => item.id;
 
@@ -31,9 +31,9 @@ class SearchResults extends Component {
       return (
         <AlertCard
           onPress={() => {
-            this.props.navigation.navigate('AddBottle');
+            this.props.navigation.navigate('AddGame', { name: this.props.query });
           }}
-          heading="Can't find a bottle?"
+          heading="Can't find a game?"
           subheading={`Tap here to add ${query}.`}
         />
       );
@@ -53,9 +53,9 @@ class SearchResults extends Component {
           />
           <AlertCard
             onPress={() => {
-              this.props.navigation.navigate('AddBottle');
+              this.props.navigation.navigate('AddGame', { name: this.props.query });
             }}
-            heading="Can't find a bottle?"
+            heading="Can't find a game?"
             subheading={`Tap here to add ${this.props.query}.`}
           />
         </View>
@@ -72,7 +72,7 @@ class Home extends Component {
   };
 
   static propTypes = {
-    getBottles: PropTypes.func.isRequired,
+    getGames: PropTypes.func.isRequired,
   };
 
   constructor(...args) {
@@ -88,7 +88,7 @@ class Home extends Component {
   onSearch = query => {
     this.setState({ searchQuery: query, searchLoading: true });
     this.props
-      .getBottles({ query, first: 25 })
+      .getGames({ query, first: 25 })
       .then(items => {
         this.setState({
           searchLoading: false,
@@ -153,5 +153,5 @@ const styles = StyleSheet.create({
 
 export default connect(
   ({ auth }) => ({ auth }),
-  { getBottles }
+  { getGames }
 )(Home);

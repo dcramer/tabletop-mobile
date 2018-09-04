@@ -15,7 +15,7 @@ class Welcome extends Component {
     return (
       <View style={styles.container}>
         <Icon style={styles.icon} name="dice" size={160} color="white" />
-        <Text style={styles.label}>Tabletop</Text>
+        <Text style={styles.label}>TABLETOP</Text>
         <View style={styles.loginContainer}>
           <Button onPress={this.props.loginFacebook} title="Continue with Facebook" color="#fff" />
         </View>
@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#4267B2',
   },
   label: {
+    marginTop: 20,
     color: '#fff',
     fontFamily: 'Rubik',
     fontSize: 34,
