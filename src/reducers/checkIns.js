@@ -2,8 +2,8 @@ export const CHECK_IN_FAILURE = 'CHECK_IN_FAILURE';
 export const CHECK_IN_SUCCESS = 'CHECK_IN_SUCCESS';
 
 const initialState = {
-  checkInError: false,
-  checkInErrorMessage: '',
+  checkinError: false,
+  checkinErrorMessage: '',
 };
 
 export default (state = initialState, action) => {
@@ -11,8 +11,8 @@ export default (state = initialState, action) => {
     case CHECK_IN_FAILURE:
       return {
         ...state,
-        checkInError: true,
-        checkInErrorMessage: action.error.message,
+        checkinError: true,
+        checkinErrorMessage: action.error.message,
       };
     default:
       return state;

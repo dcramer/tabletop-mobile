@@ -7,7 +7,7 @@ import { withNavigation } from 'react-navigation';
 import Checkin from '../components/Checkin';
 import LoadingIndicator from '../components/LoadingIndicator';
 
-import { getCheckins } from '../actions/checkIns';
+import { getCheckins } from '../actions/checkins';
 
 class Activity extends Component {
   state = { loading: true, error: null, items: [] };
@@ -43,7 +43,7 @@ class Activity extends Component {
       });
   };
 
-  _renderItem = ({ item }) => <Checkin checkIn={item} />;
+  _renderItem = ({ item }) => <Checkin checkin={item} />;
 
   _keyExtractor = item => item.id;
 

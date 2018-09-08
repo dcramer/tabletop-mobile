@@ -6,6 +6,8 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { server as serverConfig } from '../config';
 import { fetchSession } from './actions/auth';
 
+const cache = new InMemoryCache();
+
 const httpLink = createHttpLink({
   uri: serverConfig.apiURL,
 });
@@ -27,5 +29,5 @@ const authLink = setContext(async (_, { headers }) => {
 
 export default new ApolloClient({
   link: authLink.concat(httpLink),
-  cache: new InMemoryCache(),
+  cache: cache,
 });

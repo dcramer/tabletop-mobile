@@ -1,7 +1,7 @@
 import { Sentry } from 'react-native-sentry';
 import gql from 'graphql-tag';
 
-import { CHECK_IN_SUCCESS, CHECK_IN_FAILURE } from '../reducers/checkIns';
+import { CHECK_IN_SUCCESS, CHECK_IN_FAILURE } from '../reducers/checkins';
 import { GQL_GAME_FRAGMENT } from './games';
 import api from '../api';
 
@@ -40,7 +40,7 @@ const GQL_ADD_CHECKIN = gql`
     addCheckin(game: $game, notes: $notes, rating: $rating, players: $players, winners: $winners) {
       ok
       errors
-      checkIn {
+      checkin {
         ...CheckinFragment
       }
     }
@@ -54,7 +54,6 @@ export function getCheckins(params) {
       api
         .query({
           query: GQL_LIST_CHECKINS,
-          variables: params,
         })
         .then(resp => {
           resolve(resp.data.checkins);
@@ -73,12 +72,22 @@ export function addCheckin(data) {
         .mutate({
           mutation: GQL_ADD_CHECKIN,
           variables: data,
+          update: (store, { data: { addCheckin } }) => {
+            const data = store.readQuery({ query: GQL_LIST_CHECKINS });
+            store.writeQuery({
+              query: GQL_LIST_CHECKINS,
+              data: {
+                ...data,
+                checkins: [addCheckin, ...data.checkins],
+              },
+            });
+          },
         })
         .then(resp => {
           let { addCheckin } = resp.data;
           if (addCheckin.ok) {
-            resolve(addCheckin.checkIn);
-            return dispatch(addCheckinSuccess(addCheckin.checkIn));
+            resolve(addCheckin.checkin);
+            return dispatch(addCheckinSuccess(addCheckin.checkin));
           } else {
             reject(addCheckin.errors);
             return dispatch(addCheckinFailure(addCheckin.errors));
@@ -92,10 +101,10 @@ export function addCheckin(data) {
   };
 }
 
-export function addCheckinSuccess(checkIn) {
+export function addCheckinSuccess(checkin) {
   return {
     type: CHECK_IN_SUCCESS,
-    checkIn,
+    checkin,
   };
 }
 

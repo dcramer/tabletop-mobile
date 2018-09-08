@@ -81,7 +81,7 @@ export function follow(userId) {
           let { follow } = resp.data;
           if (follow.ok) {
             resolve(follow.user);
-            return dispatch(followSuccess(follow.checkIn));
+            return dispatch(followSuccess(follow.checkin));
           } else {
             reject(follow.errors);
             return dispatch(followFailure(follow.errors));
@@ -107,7 +107,7 @@ export function unfollow(userId) {
           let { unfollow } = resp.data;
           if (unfollow.ok) {
             resolve(unfollow.user);
-            return dispatch(unfollowSuccess(unfollow.checkIn));
+            return dispatch(unfollowSuccess(unfollow.checkin));
           } else {
             reject(unfollow.errors);
             return dispatch(unfollowFailure(unfollow.errors));

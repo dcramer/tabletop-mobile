@@ -5,7 +5,7 @@ import { Button, Slider } from 'react-native-elements';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { addCheckin } from '../actions/checkIns';
+import { addCheckin } from '../actions/checkins';
 import { colors, margins } from '../styles';
 import Card from '../components/Card';
 import FormLabel from '../components/FormLabel';

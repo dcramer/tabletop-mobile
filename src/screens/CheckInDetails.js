@@ -11,11 +11,11 @@ export default class CheckinDetails extends Component {
 
   render() {
     let { navigation } = this.props;
-    let { checkIn } = navigation.state.params;
+    let { checkin } = navigation.state.params;
 
     return (
       <ScrollView>
-        <Checkin checkIn={checkIn} canPress={false} />
+        <Checkin checkin={checkin} canPress={false} />
       </ScrollView>
     );
   }

@@ -27,7 +27,7 @@ class Rating extends Component {
 
 class Checkin extends Component {
   static propTypes = {
-    checkIn: CustomPropTypes.Checkin.isRequired,
+    checkin: CustomPropTypes.Checkin.isRequired,
     navigation: PropTypes.object.isRequired,
     canPress: PropTypes.bool,
   };
@@ -37,18 +37,18 @@ class Checkin extends Component {
   };
 
   goToCheckin = () => {
-    let { checkIn, navigation } = this.props;
-    navigation.navigate('CheckinDetails', { id: checkIn.id, checkIn });
+    let { checkin, navigation } = this.props;
+    navigation.navigate('CheckinDetails', { id: checkin.id, checkin });
   };
 
   goToProfile = () => {
-    let { checkIn, navigation } = this.props;
-    navigation.navigate('UserProfile', { id: checkIn.createdBy.id, user: checkIn.createdBy });
+    let { checkin, navigation } = this.props;
+    navigation.navigate('UserProfile', { id: checkin.createdBy.id, user: checkin.createdBy });
   };
 
   render() {
-    let { checkIn } = this.props;
-    let { game, players } = checkIn;
+    let { checkin } = this.props;
+    let { game, players } = checkin;
     return (
       <Card style={styles.cardContainer} onPress={this.props.canPress ? this.goToCheckin : null}>
         <View style={styles.header}>
@@ -69,13 +69,13 @@ class Checkin extends Component {
             </Text>
           </TouchableOpacity>
           <Text style={styles.timestamp}>
-            {!!checkIn.createdAt && <TimeAgo time={checkIn.createdAt} />}
+            {!!checkin.createdAt && <TimeAgo time={checkin.createdAt} />}
           </Text>
         </View>
         <Game game={game} style={styles.gameCard} />
-        {!!checkIn.rating && (
+        {!!checkin.rating && (
           <View style={styles.ratingContainer}>
-            <Rating value={checkIn.rating} maxValue={5} />
+            <Rating value={checkin.rating} maxValue={5} />
           </View>
         )}
         <View style={styles.actionContainer}>
