@@ -15,6 +15,7 @@ class SearchResults extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     onQuery: PropTypes.func.isRequired,
+    addScreen: PropTypes.string,
     onSelect: PropTypes.func,
     query: PropTypes.string,
   };
@@ -81,15 +82,19 @@ class SearchResults extends Component {
           keyExtractor={this._keyExtractor}
           renderItem={this._renderItem}
         />
-        {!!this.props.query && (
-          <AlertCard
-            onPress={() => {
-              this.props.navigation.navigate('AddPublisher', { name: this.props.query });
-            }}
-            heading="Can't find a publisher?"
-            subheading={`Tap here to add ${this.props.query}.`}
-          />
-        )}
+        {!!this.props.query &&
+          this.props.addScreen && (
+            <AlertCard
+              onPress={() => {
+                this.props.navigation.navigate(this.props.addScreen, {
+                  name: this.props.query,
+                  onComplete: this.props.onSelect,
+                });
+              }}
+              heading={`Can't find a ${this.props.nounSingular || 'result'}?`}
+              subheading={`Tap here to add ${this.props.query}.`}
+            />
+          )}
       </View>
     );
   }
@@ -119,7 +124,7 @@ class RelationSelect extends Component {
 
   render() {
     let { navigation } = this.props;
-    let { onQuery, title } = navigation.state.params;
+    let { addScreen, nounSingular, onQuery, title } = navigation.state.params;
     return (
       <View style={styles.container}>
         <ModalHeader title={title} />
@@ -129,6 +134,8 @@ class RelationSelect extends Component {
         <SearchResults
           onSelect={this.onSelect}
           query={this.state.query}
+          addScreen={addScreen}
+          nounSingular={nounSingular}
           navigation={this.props.navigation}
           onQuery={onQuery}
         />

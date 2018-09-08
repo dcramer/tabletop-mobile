@@ -15,6 +15,8 @@ class RelationField extends Component {
     name: PropTypes.string.isRequired,
     value: PropTypes.shape(CustomPropTypes.Location),
     onQuery: PropTypes.func.isRequired,
+    addScreen: PropTypes.string,
+    nounSingular: PropTypes.string,
   };
 
   constructor(...args) {
@@ -39,6 +41,8 @@ class RelationField extends Component {
               onChangeValue: this.setValue,
               onQuery: this.props.onQuery,
               title: this.props.name,
+              addScreen: this.props.addScreen,
+              nounSingular: this.props.nounSingular,
             })
           }>
           <View style={styles.labelContainer}>

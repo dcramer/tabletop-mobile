@@ -97,6 +97,8 @@ class AddGame extends Component {
           onQuery={this.props.getPublishers}
           name="Publisher"
           placeholder="e.g. Stonemaker Games"
+          nounSingular="publisher"
+          addScreen="AddPublisher"
           value={this.state.publisher}
         />
         <TextField

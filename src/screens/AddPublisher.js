@@ -39,7 +39,9 @@ class AddPublisher extends Component {
       .addPublisher({
         name: state.name,
       })
-      .then(publisher => {
+      .then(result => {
+        let onComplete = navigation.getParam('onComplete');
+        onComplete && onComplete(result);
         navigation.goBack(null);
       })
       .catch(error => {
@@ -59,7 +61,7 @@ class AddPublisher extends Component {
         <TextField
           onChangeValue={v => this.onChangeValue('name', v)}
           name="Name"
-          placeholder="e.g. Daydream Games"
+          placeholder="e.g. Stonemaker Games"
           value={this.state.name}
         />
         <Button
