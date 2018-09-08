@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Sentry } from 'react-native-sentry';
 import { StyleSheet, FlatList, Text, View } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import { colors, layout, margins } from '../styles';
 import { getGames } from '../actions/games';
@@ -75,15 +76,33 @@ class Home extends Component {
     getGames: PropTypes.func.isRequired,
   };
 
+  state = {
+    searchActive: false,
+    searchQuery: null,
+    searchResults: [],
+    searchLoading: false,
+  };
+
   constructor(...args) {
     super(...args);
-    this.state = {
+
+    this._willFocus = this.props.navigation.addListener('willFocus', payload => {
+      this.resetSearch();
+    });
+  }
+
+  componentWillUnmount = () => {
+    this._willFocus.remove();
+  };
+
+  resetSearch = () => {
+    this.setState({
       searchActive: false,
       searchQuery: null,
       searchResults: [],
       searchLoading: false,
-    };
-  }
+    });
+  };
 
   onSearch = query => {
     this.setState({ searchQuery: query, searchLoading: true });
@@ -154,4 +173,4 @@ const styles = StyleSheet.create({
 export default connect(
   ({ auth }) => ({ auth }),
   { getGames }
-)(Home);
+)(withNavigation(Home));

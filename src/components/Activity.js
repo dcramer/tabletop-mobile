@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Sentry } from 'react-native-sentry';
 import { FlatList, Text } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import Checkin from '../components/Checkin';
 import LoadingIndicator from '../components/LoadingIndicator';
@@ -11,7 +12,22 @@ import { getCheckins } from '../actions/checkIns';
 class Activity extends Component {
   state = { loading: true, error: null, items: [] };
 
-  async componentDidMount() {
+  constructor(...args) {
+    super(...args);
+    this._willFocus = this.props.navigation.addListener('willFocus', payload => {
+      this.reload();
+    });
+  }
+
+  componentDidMount = () => {
+    this.reload();
+  };
+
+  componentWillUnmount = () => {
+    this._willFocus.remove();
+  };
+
+  reload = () => {
     this.props
       .getCheckins(this.props.queryParams)
       .then(items => {
@@ -25,7 +41,7 @@ class Activity extends Component {
         this.setState({ error, loading: false });
         Sentry.captureException(error);
       });
-  }
+  };
 
   _renderItem = ({ item }) => <Checkin checkIn={item} />;
 
@@ -51,4 +67,4 @@ class Activity extends Component {
 export default connect(
   null,
   { getCheckins }
-)(Activity);
+)(withNavigation(Activity));
