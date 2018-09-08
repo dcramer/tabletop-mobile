@@ -25,9 +25,9 @@ class Rating extends Component {
   }
 }
 
-class CheckIn extends Component {
+class Checkin extends Component {
   static propTypes = {
-    checkIn: CustomPropTypes.CheckIn.isRequired,
+    checkIn: CustomPropTypes.Checkin.isRequired,
     navigation: PropTypes.object.isRequired,
     canPress: PropTypes.bool,
   };
@@ -36,9 +36,9 @@ class CheckIn extends Component {
     canPress: true,
   };
 
-  goToCheckIn = () => {
+  goToCheckin = () => {
     let { checkIn, navigation } = this.props;
-    navigation.navigate('CheckInDetails', { id: checkIn.id, checkIn });
+    navigation.navigate('CheckinDetails', { id: checkIn.id, checkIn });
   };
 
   goToProfile = () => {
@@ -50,7 +50,7 @@ class CheckIn extends Component {
     let { checkIn } = this.props;
     let { game, players } = checkIn;
     return (
-      <Card style={styles.cardContainer} onPress={this.props.canPress ? this.goToCheckIn : null}>
+      <Card style={styles.cardContainer} onPress={this.props.canPress ? this.goToCheckin : null}>
         <View style={styles.header}>
           <TouchableOpacity onPress={this.goToProfile} style={styles.user}>
             {players[0].avatar ? (
@@ -157,4 +157,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(CheckIn);
+export default withNavigation(Checkin);

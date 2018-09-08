@@ -18,10 +18,10 @@ export default class GameDetails extends Component {
     };
   };
 
-  _onCheckIn = () => {
+  _onCheckin = () => {
     let { navigation } = this.props;
     let { game } = navigation.state.params;
-    navigation.navigate('CheckIn', { id: game.id, game });
+    navigation.navigate('Checkin', { id: game.id, game });
   };
 
   render() {
@@ -33,7 +33,7 @@ export default class GameDetails extends Component {
         <Game canPress={false} game={game} />
         <Button
           title="Check-in"
-          onPress={this._onCheckIn}
+          onPress={this._onCheckin}
           containerViewStyle={styles.buttonContainer}
           color={colors.background}
           backgroundColor={colors.primary}

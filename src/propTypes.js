@@ -27,7 +27,7 @@ export const Game = PropTypes.shape({
   durationTyope: PropTypes.string,
 });
 
-export const CheckIn = PropTypes.shape({
+export const Checkin = PropTypes.shape({
   id: PropTypes.string,
   game: Game.isRequired,
   notes: PropTypes.string,
@@ -37,7 +37,7 @@ export const CheckIn = PropTypes.shape({
 });
 
 export default {
-  CheckIn,
+  Checkin,
   Game,
   Publisher,
   User,

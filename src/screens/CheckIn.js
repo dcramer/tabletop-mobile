@@ -5,7 +5,7 @@ import { Button, Slider } from 'react-native-elements';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { addCheckIn } from '../actions/checkIns';
+import { addCheckin } from '../actions/checkIns';
 import { colors, margins } from '../styles';
 import Card from '../components/Card';
 import FormLabel from '../components/FormLabel';
@@ -22,7 +22,7 @@ const tagDatabase = [
   { label: 'Apple Pie', value: 'Apple Pie' },
 ].sort((a, b) => a.label > b.label);
 
-class CheckInRating extends Component {
+class CheckinRating extends Component {
   static propTypes = {
     onChangeValue: PropTypes.func.isRequired,
   };
@@ -70,7 +70,7 @@ class CheckInRating extends Component {
   }
 }
 
-class CheckInPlayers extends Component {
+class CheckinPlayers extends Component {
   static propTypes = {
     onChangeValue: PropTypes.func.isRequired,
   };
@@ -112,10 +112,10 @@ class CheckInPlayers extends Component {
   }
 }
 
-class CheckIn extends Component {
+class Checkin extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
-    addCheckIn: PropTypes.func.isRequired,
+    addCheckin: PropTypes.func.isRequired,
     navigation: PropTypes.object.isRequired,
   };
 
@@ -143,7 +143,7 @@ class CheckIn extends Component {
     this.setState({ [name]: value });
   };
 
-  onCheckIn = () => {
+  onCheckin = () => {
     if (!this.isValid()) return;
     if (this.state.submitting) return;
     let state = this.state;
@@ -151,7 +151,7 @@ class CheckIn extends Component {
     let { game } = navigation.state.params;
     this.setState({ submitting: true });
     this.props
-      .addCheckIn({
+      .addCheckin({
         game: game.id,
         notes: state.notes,
         rating: state.rating,
@@ -183,16 +183,16 @@ class CheckIn extends Component {
           name="Notes"
           placeholder="How was it?"
         />
-        <CheckInRating
+        <CheckinRating
           onChangeValue={v => this.onChangeValue('rating', v)}
           navigation={navigation}
         />
-        <CheckInPlayers
+        <CheckinPlayers
           label="Players"
           onChangeValue={v => this.onChangeValue('players', v)}
           navigation={navigation}
         />
-        <CheckInPlayers
+        <CheckinPlayers
           label="Winners"
           onChangeValue={v => this.onChangeValue('winners', v)}
           navigation={navigation}
@@ -205,7 +205,7 @@ class CheckIn extends Component {
         />
         <Button
           title="Confirm Check-in"
-          onPress={this.onCheckIn}
+          onPress={this.onCheckin}
           containerViewStyle={styles.buttonContainer}
           disabled={!this.isValid() || this.state.submitting}
           buttonStyle={styles.button}
@@ -272,5 +272,5 @@ export default connect(
   ({ auth }) => ({
     auth,
   }),
-  { addCheckIn }
-)(CheckIn);
+  { addCheckin }
+)(Checkin);

@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 
-import CheckIn from '../components/CheckIn';
+import Checkin from '../components/Checkin';
 
-export default class CheckInDetails extends Component {
+export default class CheckinDetails extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
@@ -15,7 +15,7 @@ export default class CheckInDetails extends Component {
 
     return (
       <ScrollView>
-        <CheckIn checkIn={checkIn} canPress={false} />
+        <Checkin checkIn={checkIn} canPress={false} />
       </ScrollView>
     );
   }

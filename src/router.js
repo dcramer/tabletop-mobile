@@ -7,8 +7,8 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import Activity from './screens/Activity';
 import AddGame from './screens/AddGame';
 import AddPublisher from './screens/AddPublisher';
-import CheckIn from './screens/CheckIn';
-import CheckInDetails from './screens/CheckInDetails';
+import Checkin from './screens/Checkin';
+import CheckinDetails from './screens/CheckinDetails';
 import RelationSelect from './screens/RelationSelect';
 import FriendSelect from './screens/FriendSelect';
 import FindFriends from './screens/FindFriends';
@@ -40,8 +40,8 @@ const HomeStack = createStackNavigator(
   {
     Home,
     GameDetails,
-    CheckInDetails,
-    CheckIn,
+    CheckinDetails,
+    Checkin,
     AddGame,
     AddPublisher,
     FindFriends,
