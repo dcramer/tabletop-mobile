@@ -1,3 +1,3 @@
 export const server = {
-  apiURL: 'http://localhost:8000/graphql/',
+  apiURL: __DEV__ ? 'http://localhost:8000/graphql/' : 'http://example.com/graphql/',
 };
