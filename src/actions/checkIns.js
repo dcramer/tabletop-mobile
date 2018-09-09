@@ -54,6 +54,7 @@ export function getCheckins(params) {
       api
         .query({
           query: GQL_LIST_CHECKINS,
+          variables: params,
         })
         .then(resp => {
           resolve(resp.data.checkins);
