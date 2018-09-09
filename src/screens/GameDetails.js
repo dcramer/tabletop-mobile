@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Button } from 'react-native-elements';
 import { StyleSheet, ScrollView } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import { colors } from '../styles';
+import Activity from '../components/Activity';
+import ButtonGroup from '../components/ButtonGroup';
 import Game from '../components/Game';
+import Panel from '../components/Panel';
 
-export default class GameDetails extends Component {
+class GameDetails extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
@@ -17,6 +22,8 @@ export default class GameDetails extends Component {
       title: Game.getGameName(game),
     };
   };
+
+  state = { activityScope: 'friends' };
 
   _onCheckin = () => {
     let { navigation } = this.props;
@@ -38,6 +45,17 @@ export default class GameDetails extends Component {
           color={colors.background}
           backgroundColor={colors.primary}
         />
+        <Panel
+          title="Recent Activity"
+          header={
+            <ButtonGroup
+              selectedIndex={this.state.activityScope === 'friends' ? 0 : 1}
+              onPress={idx => this.setState({ activityScope: idx === 0 ? 'friends' : 'public' })}
+              buttons={['Friends', 'All']}
+            />
+          }>
+          <Activity auth={this.props.auth} scope={this.state.activityScope} game={game.id} />
+        </Panel>
       </ScrollView>
     );
   }
@@ -46,8 +64,6 @@ export default class GameDetails extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
   },
   buttonContainer: {
     alignSelf: 'stretch',
@@ -56,3 +72,5 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
 });
+
+export default connect(({ auth }) => ({ auth }))(withNavigation(GameDetails));

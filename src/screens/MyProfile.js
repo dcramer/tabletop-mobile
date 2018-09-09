@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Alert, StyleSheet, View } from 'react-native';
-import { ButtonGroup } from 'react-native-elements';
 
 import { logOut } from '../actions/auth';
-import { colors, margins } from '../styles';
 import Activity from '../components/Activity';
+import ButtonGroup from '../components/ButtonGroup';
 import FriendList from '../components/FriendList';
 import ModalHeader from '../components/ModalHeader';
 
@@ -54,12 +53,7 @@ class MyProfile extends Component {
           rightActionText="Log Out"
         />
         <ButtonGroup
-          containerStyle={styles.buttonGroup}
-          textStyle={styles.buttonText}
           selectedIndex={this.state.selectedButton}
-          innerBorderStyle={styles.buttonGroupInnerBorderStyle}
-          selectedButtonStyle={styles.buttonActive}
-          selectedTextStyle={styles.buttonActiveText}
           onPress={idx => this.setState({ selectedButton: idx })}
           buttons={['Activity', 'Friends', 'Settings']}
         />
@@ -72,26 +66,6 @@ class MyProfile extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-  },
-  buttonGroup: {
-    backgroundColor: '#fff',
-    borderColor: colors.primary,
-    marginTop: margins.half,
-    marginBottom: margins.half,
-    borderWidth: 2,
-  },
-  buttonGroupInnerBorderStyle: {
-    color: colors.primary,
-    width: 2,
-  },
-  buttonText: {
-    color: colors.default,
-  },
-  buttonActive: {
-    backgroundColor: colors.primary,
-  },
-  buttonActiveText: {
-    color: '#fff',
   },
 });
 

@@ -61,7 +61,7 @@ class UserProfile extends Component {
           rightActionOnPress={null}
         />
         <FriendAction userId={this.state.userId} />
-        <Activity queryParams={{ user: this.state.userId }} />
+        <Activity user={this.state.userId} />
       </View>
     );
   }

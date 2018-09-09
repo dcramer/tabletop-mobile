@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { isEqual } from 'lodash';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Sentry } from 'react-native-sentry';
 import { FlatList, Text } from 'react-native';
@@ -12,11 +14,24 @@ import { getCheckins } from '../actions/checkins';
 class Activity extends Component {
   state = { loading: true, error: null, items: [] };
 
+  static propTypes = {
+    game: PropTypes.string,
+    scope: PropTypes.string,
+    user: PropTypes.string,
+  };
+
   constructor(...args) {
     super(...args);
     this._willFocus = this.props.navigation.addListener('willFocus', payload => {
-      this.reload();
+      this.setState({ loading: true }, this.reload);
     });
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // TODO(dcramer): how do we deep equal with RN? lodash?
+    if (!isEqual(this.props, nextProps)) {
+      this.setState({ loading: true }, this.reload);
+    }
   }
 
   componentDidMount = () => {
@@ -29,7 +44,11 @@ class Activity extends Component {
 
   reload = () => {
     this.props
-      .getCheckins(this.props.queryParams)
+      .getCheckins({
+        scope: this.props.scope,
+        game: this.props.game,
+        user: this.props.user,
+      })
       .then(items => {
         this.setState({
           loading: false,

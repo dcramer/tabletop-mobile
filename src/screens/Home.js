@@ -9,6 +9,7 @@ import { colors, layout, margins } from '../styles';
 import { getGames } from '../actions/games';
 import Activity from '../components/Activity';
 import AlertCard from '../components/AlertCard';
+import ButtonGroup from '../components/ButtonGroup';
 import Game from '../components/Game';
 import LoadingIndicator from '../components/LoadingIndicator';
 import SearchBar from '../components/SearchBar';
@@ -77,10 +78,10 @@ class Home extends Component {
   };
 
   state = {
-    searchActive: false,
     searchQuery: null,
     searchResults: [],
     searchLoading: false,
+    activityScope: 'friends',
   };
 
   constructor(...args) {
@@ -97,7 +98,6 @@ class Home extends Component {
 
   resetSearch = () => {
     this.setState({
-      searchActive: false,
       searchQuery: null,
       searchResults: [],
       searchLoading: false,
@@ -126,16 +126,14 @@ class Home extends Component {
       <View style={styles.container}>
         <View style={styles.header}>
           <SearchBar
-            onFocus={() => this.setState({ searchActive: true })}
-            onBlur={() => this.setState({ searchActive: false })}
             onChangeValue={this.onSearch}
             style={styles.searchBarContainer}
             loading={this.state.searchLoading}
             header
           />
         </View>
-        <View style={styles.resultsContainer}>
-          {this.state.searchActive || !!this.state.searchQuery ? (
+        {this.state.searchQuery ? (
+          <View style={styles.resultsContainer}>
             <SearchResults
               query={this.state.searchQuery}
               loading={this.state.searchLoading}
@@ -143,10 +141,17 @@ class Home extends Component {
               navigation={this.props.navigation}
               results={this.state.searchResults}
             />
-          ) : (
-            <Activity auth={this.props.auth} scope="public" />
-          )}
-        </View>
+          </View>
+        ) : (
+          <React.Fragment>
+            <ButtonGroup
+              selectedIndex={this.state.activityScope === 'friends' ? 0 : 1}
+              onPress={idx => this.setState({ activityScope: idx === 0 ? 'friends' : 'public' })}
+              buttons={['Friends', 'All']}
+            />
+            <Activity auth={this.props.auth} scope={this.state.activityScope} />
+          </React.Fragment>
+        )}
       </View>
     );
   }
