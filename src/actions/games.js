@@ -8,14 +8,10 @@ export const GQL_GAME_FRAGMENT = gql`
   fragment GameFragment on Game {
     id
     name
-    publisher {
-      id
-      name
-    }
+    yearPublished
     minPlayers
     maxPlayers
     duration
-    durationType
   }
 `;
 
@@ -31,7 +27,7 @@ export const GQL_LIST_GAMES = gql`
 export const GQL_ADD_GAME = gql`
   mutation AddGame(
     $name: String!
-    $publisher: UUID!
+    $yearPublished: Int
     $minPlayers: Int
     $maxPlayers: Int
     $duration: Int
@@ -39,7 +35,7 @@ export const GQL_ADD_GAME = gql`
   ) {
     addGame(
       name: $name
-      publisher: $publisher
+      yearPublished: $yearPublished
       minPlayers: $minPlayers
       maxPlayers: $maxPlayers
       duration: $duration

@@ -45,7 +45,7 @@ class Game extends Component {
             {game.name}
           </Text>
           <Text style={styles.publisher} numberOfLines={1} ellipsizeMode={'tail'}>
-            {game.publisher.name}
+            {game.yearPublished || ''}
           </Text>
           <View style={styles.meta}>
             <Icon name="users" size={16} style={styles.playersIcon} color={colors.default} />

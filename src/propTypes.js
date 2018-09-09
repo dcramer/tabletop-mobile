@@ -20,7 +20,7 @@ export const Publisher = PropTypes.shape({
 export const Game = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string.isRequired,
-  publisher: Publisher.isRequired,
+  yearPublished: PropTypes.number,
   minPlayers: PropTypes.number,
   maxPlayers: PropTypes.number,
   duration: PropTypes.number,
