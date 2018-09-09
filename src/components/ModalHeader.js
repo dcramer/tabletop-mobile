@@ -9,8 +9,10 @@ class ModalHeader extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
+    leftAction: PropTypes.node,
     leftActionText: PropTypes.string,
     leftActionOnPress: PropTypes.func,
+    rightAction: PropTypes.node,
     rightActionText: PropTypes.string,
     rightActionOnPress: PropTypes.func,
   };
@@ -21,6 +23,14 @@ class ModalHeader extends Component {
     rightActionText: 'Save',
   };
 
+  renderAction({ node, onPress, text }) {
+    let body = node ? node : <Text style={styles.actionText}>{text}</Text>;
+    if (onPress) {
+      return <TouchableOpacity onPress={onPress}>{body}</TouchableOpacity>;
+    }
+    return body;
+  }
+
   render() {
     let { leftActionOnPress } = this.props;
     if (leftActionOnPress === undefined) {
@@ -28,21 +38,22 @@ class ModalHeader extends Component {
     }
     return (
       <View style={styles.container}>
-        {leftActionOnPress ? (
-          <TouchableOpacity onPress={leftActionOnPress}>
-            <Text style={[styles.action, styles.leftAction]}>{this.props.leftActionText}</Text>
-          </TouchableOpacity>
-        ) : (
-          <Text style={[styles.action, styles.leftAction]} />
-        )}
+        <View style={styles.action}>
+          {this.renderAction({
+            node: this.props.leftAction,
+            onPress: leftActionOnPress,
+            text: this.props.leftActionText,
+            style: styles.leftAction,
+          })}
+        </View>
         <Text style={styles.text}>{this.props.title}</Text>
-        {this.props.rightActionOnPress ? (
-          <TouchableOpacity onPress={this.props.rightActionOnPress}>
-            <Text style={[styles.action, styles.rightAction]}>{this.props.rightActionText}</Text>
-          </TouchableOpacity>
-        ) : (
-          <Text style={[styles.action, styles.rightAction]} />
-        )}
+        <View style={[styles.action, styles.rightAction]}>
+          {this.renderAction({
+            node: this.props.rightAction,
+            onPress: this.props.rightActionOnPress,
+            text: this.props.rightActionText,
+          })}
+        </View>
       </View>
     );
   }
@@ -51,29 +62,30 @@ class ModalHeader extends Component {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'stretch',
     backgroundColor: '#7b6be6',
     paddingTop: layout.statusBarHeight + 2,
     paddingBottom: 11.5,
   },
   action: {
-    color: '#fff',
-    fontSize: 14,
-    flex: 0,
     width: 100,
     paddingRight: margins.threeQuarter,
     paddingLeft: margins.threeQuarter,
   },
+  actionText: {
+    color: '#fff',
+    fontSize: 14,
+  },
   rightAction: {
-    textAlign: 'right',
+    alignItems: 'flex-end',
   },
   text: {
+    flex: 1,
     color: '#fff',
     fontSize: 17,
     textAlign: 'center',
     fontWeight: 'bold',
-    flex: 1,
   },
 });
 

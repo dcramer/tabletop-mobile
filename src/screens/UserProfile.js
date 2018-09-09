@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
 
 import { getUsers } from '../actions/users';
+import { colors } from '../styles';
 import Activity from '../components/Activity';
 import ModalHeader from '../components/ModalHeader';
 import FriendAction from '../components/FriendAction';
@@ -56,11 +57,10 @@ class UserProfile extends Component {
     return (
       <View style={styles.container}>
         <ModalHeader
-          title={this.state.user.displayName}
-          leftActionOnPress={null}
-          rightActionOnPress={null}
+          title={this.state.user.name}
+          leftActionText={null}
+          rightAction={<FriendAction userId={this.state.userId} color={colors.background} />}
         />
-        <FriendAction userId={this.state.userId} />
         <Activity user={this.state.userId} />
       </View>
     );

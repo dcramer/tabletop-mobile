@@ -43,7 +43,8 @@ class Checkin extends Component {
 
   goToProfile = () => {
     let { checkin, navigation } = this.props;
-    navigation.navigate('UserProfile', { id: checkin.createdBy.id, user: checkin.createdBy });
+    let { players } = checkin;
+    navigation.navigate('UserProfile', { id: players[0].id, user: players[0] });
   };
 
   render() {
