@@ -25,6 +25,11 @@ export const Game = PropTypes.shape({
   maxPlayers: PropTypes.number,
   duration: PropTypes.number,
   durationTyope: PropTypes.string,
+  image: PropTypes.shape({
+    url: PropTypes.string.isRequired,
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
+  }),
 });
 
 export const Checkin = PropTypes.shape({

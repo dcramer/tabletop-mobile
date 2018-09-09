@@ -110,6 +110,7 @@ class Home extends Component {
       .getGames({ query, first: 25 })
       .then(items => {
         this.setState({
+          searchError: null,
           searchLoading: false,
           searchResults: items,
         });

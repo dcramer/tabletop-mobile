@@ -35,8 +35,14 @@ class Game extends Component {
       <Card
         style={[styles.cardContainer, style]}
         onPress={this.props.canPress ? this._onPress : null}>
-        {game.thumbnail ? (
-          <Image source={{ uri: game.thumbnail }} style={styles.thumbnail} resizeMode="contain" />
+        {game.image ? (
+          <Image
+            source={{ uri: game.image.url }}
+            width="50"
+            height="50"
+            style={styles.thumbnail}
+            resizeMode="contain"
+          />
         ) : (
           <Icon name="file-image" size={64} style={styles.thumbnail} color={colors.trim} />
         )}
@@ -93,7 +99,8 @@ const styles = StyleSheet.create({
   },
   thumbnail: {
     flex: 1,
-    alignSelf: 'center',
+    alignSelf: 'stretch',
+    // alignSelf: 'center',
     height: undefined,
     width: undefined,
   },
