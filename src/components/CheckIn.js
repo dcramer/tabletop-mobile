@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: margins.half,
+    marginTop: margins.half,
   },
   user: {
     flex: 1,
