@@ -7,8 +7,7 @@ Probably the setup instructions:
 - Install Cocoapods (`brew install cocoapods`)
 - Install Watchman (`brew install watchman`)
 - Configure build settings in Xcode: https://github.com/facebook/react-native/issues/11265#issuecomment-312155357
-- `cd ios && pod install`
-- `yarn install`
+- `make`
 - `yarn run ios`
 
 Probably gucci.
