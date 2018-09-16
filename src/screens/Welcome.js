@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
 });
 
 export default connect(
-  () => ({}),
+  null,
   { loginFacebook, loginSuccess }
 )(Welcome);

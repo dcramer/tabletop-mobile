@@ -18,10 +18,11 @@ class App extends Component {
   }
 
   renderBody() {
-    if (this.props.auth.validToken === null) {
+    let { auth } = this.props;
+    if (auth.validToken === null || auth.isAuthenticating) {
       return <Loading />;
     }
-    if (!this.props.auth.validToken) {
+    if (!auth.validToken) {
       return <UnauthenticatedNavigator {...this.props} />;
     }
     return <RootNavigator {...this.props} />;
