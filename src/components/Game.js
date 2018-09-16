@@ -56,7 +56,9 @@ class Game extends Component {
           <View style={styles.meta}>
             <Icon name="users" size={16} style={styles.playersIcon} color={colors.default} />
             <Text style={styles.players} numberOfLines={1} ellipsizeMode={'tail'}>
-              {game.minPlayers} - {game.maxPlayers}
+              {game.minPlayers !== game.maxPlayers
+                ? `${game.minPlayers} - ${game.maxPlayers}`
+                : game.minPlayers}
             </Text>
           </View>
         </View>

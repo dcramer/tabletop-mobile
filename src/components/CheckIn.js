@@ -40,7 +40,7 @@ class Checkin extends Component {
 
   goToCheckin = () => {
     let { checkin, navigation } = this.props;
-    navigation.navigate('CheckinDetails', { id: checkin.id, checkin });
+    navigation.navigate('CheckinDetails', { id: checkin.id });
   };
 
   goToProfile = () => {

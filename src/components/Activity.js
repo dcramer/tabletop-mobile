@@ -12,7 +12,7 @@ import LoadingIndicator from '../components/LoadingIndicator';
 import { getCheckins } from '../actions/checkins';
 
 class Activity extends Component {
-  state = { loading: true, error: null, items: [] };
+  state = { loading: true, error: null, itemIds: [] };
 
   static propTypes = {
     game: PropTypes.string,
@@ -27,12 +27,13 @@ class Activity extends Component {
     });
   }
 
-  componentWillReceiveProps(nextProps) {
-    // TODO(dcramer): how do we deep equal with RN? lodash?
-    if (!isEqual(this.props, nextProps)) {
-      this.setState({ loading: true }, this.reload);
-    }
-  }
+  // componentWillReceiveProps(nextProps) {
+  //   // TODO(dcramer): how do we deep equal with RN? lodash?
+  //   console.warn()
+  //   if (!isEqual(this.props, nextProps)) {
+  //     this.setState({ loading: true }, this.reload);
+  //   }
+  // }
 
   componentDidMount = () => {
     this.reload();
@@ -53,7 +54,7 @@ class Activity extends Component {
         this.setState({
           loading: false,
           error: null,
-          items,
+          itemIds: items.map(i => i.id),
         });
       })
       .catch(error => {
@@ -75,7 +76,7 @@ class Activity extends Component {
     }
     return (
       <FlatList
-        data={this.state.items}
+        data={this.state.itemIds.map(id => this.props.checkinCache[id]).filter(i => !!i)}
         keyExtractor={this._keyExtractor}
         renderItem={this._renderItem}
       />
@@ -84,6 +85,8 @@ class Activity extends Component {
 }
 
 export default connect(
-  null,
+  ({ checkins }) => ({
+    checkinCache: checkins.checkinCache,
+  }),
   { getCheckins }
 )(withNavigation(Activity));

@@ -5,7 +5,7 @@ import { TouchableOpacity, ViewPropTypes } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { colors } from '../styles';
-import { addLike, removeLike } from '../actions/likes';
+import { addLike, removeLike } from '../actions/checkins';
 import CustomPropTypes from '../propTypes';
 import Game from './Game';
 import Card from './Card';

@@ -1,22 +1,27 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { ScrollView } from 'react-native';
 
 import Checkin from '../components/Checkin';
 
-export default class CheckinDetails extends Component {
+class CheckinDetails extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
 
   render() {
     let { navigation } = this.props;
-    let { checkin } = navigation.state.params;
+    let { id } = navigation.state.params;
 
     return (
       <ScrollView>
-        <Checkin checkin={checkin} canPress={false} />
+        <Checkin checkin={this.props.checkinCache[id]} canPress={false} />
       </ScrollView>
     );
   }
 }
+
+export default connect(({ checkins }) => ({
+  checkinCache: checkins.checkinCache,
+}))(CheckinDetails);
