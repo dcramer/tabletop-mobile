@@ -17,3 +17,9 @@ You can also split up Metro (aka webpack) and simulator:
 
 - `yarn start` -- starts metro compiler in the foreground)
 - `react-native run-ios` - starts the simulator and runs the app
+
+## Release
+
+When building a 'Release' configuration, the app will use `.env.production` (vs `.env`).
+
+- `react-native run-ios --configuration Release`
