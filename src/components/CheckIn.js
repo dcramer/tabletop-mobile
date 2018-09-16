@@ -9,6 +9,8 @@ import { colors, margins } from '../styles';
 import CustomPropTypes from '../propTypes';
 import Game from './Game';
 import Card from './Card';
+import CommentAction from './CommentAction';
+import LikeAction from './LikeAction';
 
 class Rating extends Component {
   render() {
@@ -80,8 +82,8 @@ class Checkin extends Component {
           </View>
         )}
         <View style={styles.actionContainer}>
-          <Icon name="heart" size={24} color={colors.default} style={styles.action} />
-          <Icon name="comments" size={24} color={colors.default} style={styles.action} />
+          <LikeAction style={styles.action} color={colors.default} checkin={checkin} />
+          <CommentAction style={styles.action} color={colors.default} checkin={checkin} />
         </View>
       </Card>
     );
@@ -147,14 +149,14 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     marginTop: margins.half,
-    flex: 4,
+    flex: 2,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
   },
   action: {
     flex: 1,
-    textAlign: 'center',
+    alignItems: 'center',
     padding: margins.quarter,
   },
 });
