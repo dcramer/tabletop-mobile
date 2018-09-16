@@ -727,6 +727,14 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		ABE13B52493F4E959174F894 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			path = Application;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
