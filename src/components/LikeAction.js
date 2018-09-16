@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { TouchableOpacity, ViewPropTypes } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import { addLike } from '../actions/likes';
+import { colors } from '../styles';
+import { addLike, removeLike } from '../actions/likes';
 import CustomPropTypes from '../propTypes';
 import Game from './Game';
 import Card from './Card';
@@ -13,25 +14,37 @@ class LikeAction extends Component {
   static propTypes = {
     addLike: PropTypes.func.isRequired,
     checkin: CustomPropTypes.Checkin.isRequired,
+    removeLike: PropTypes.func.isRequired,
     style: ViewPropTypes.style,
-    color: PropTypes.string,
   };
 
-  addLike = () => {
-    this.props.addLike({
-      checkin: this.props.checkin.id,
-    });
+  onToggleLike = () => {
+    let { checkin } = this.props;
+    if (!checkin.isLiked) {
+      this.props.addLike({
+        checkin: checkin.id,
+      });
+    } else {
+      this.props.removeLike({
+        checkin: checkin.id,
+      });
+    }
   };
 
   render() {
     return (
-      <TouchableOpacity style={this.props.style}>
-        <Icon name="heart" size={24} color={this.props.color} />
+      <TouchableOpacity style={this.props.style} onPress={this.onToggleLike}>
+        <Icon
+          name="heart"
+          solid={this.props.checkin.isLiked}
+          size={24}
+          color={this.props.checkin.isLiked ? colors.primary : colors.default}
+        />
       </TouchableOpacity>
     );
   }
 }
 export default connect(
   null,
-  { addLike }
+  { addLike, removeLike }
 )(LikeAction);

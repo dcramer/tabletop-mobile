@@ -15,6 +15,9 @@ const GQL_CHECKIN_FRAGMENT = gql`
       id
       name
     }
+    totalLikes
+    totalComments
+    isLiked
     createdAt
   }
   ${GQL_GAME_FRAGMENT}

@@ -82,8 +82,8 @@ class Checkin extends Component {
           </View>
         )}
         <View style={styles.actionContainer}>
-          <LikeAction style={styles.action} color={colors.default} checkin={checkin} />
-          <CommentAction style={styles.action} color={colors.default} checkin={checkin} />
+          <LikeAction style={styles.action} checkin={checkin} />
+          <CommentAction style={styles.action} checkin={checkin} />
         </View>
       </Card>
     );

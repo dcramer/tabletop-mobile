@@ -4,20 +4,12 @@ import gql from 'graphql-tag';
 import { LIKE_SUCCESS, LIKE_FAILURE } from '../reducers/likes';
 import api from '../api';
 
-const GQL_LIKE_FRAGMENT = gql`
-  fragment LikeFragment on Like {
-    id
-    createdAt
-  }
-`;
-
 const GQL_LIST_LIKES = gql`
   query LikesQuery($createdBy: UUID, $checkin: UUID) {
     likes(createdBy: $createdBy, checkin: $checkin) {
       ...LikeFragment
     }
   }
-  ${GQL_LIKE_FRAGMENT}
 `;
 
 const GQL_ADD_LIKE = gql`
@@ -25,12 +17,17 @@ const GQL_ADD_LIKE = gql`
     addLike(checkin: $checkin) {
       ok
       errors
-      like {
-        ...LikeFragment
-      }
     }
   }
-  ${GQL_LIKE_FRAGMENT}
+`;
+
+const GQL_REMOVE_LIKE = gql`
+  mutation RemoveLike($checkin: UUID!) {
+    removeLike(checkin: $checkin) {
+      ok
+      errors
+    }
+  }
 `;
 
 export function getLikes(params) {
@@ -62,8 +59,8 @@ export function addLike(data) {
         .then(resp => {
           let { addLike } = resp.data;
           if (addLike.ok) {
-            resolve(addLike.like);
-            return dispatch(addLikeSuccess(addLike.like));
+            resolve({ checkin: data.checkin });
+            return dispatch(addLikeSuccess({ checkin: data.checkin }));
           } else {
             reject(addLike.errors);
             return dispatch(addLikeFailure(addLike.errors));
@@ -77,7 +74,7 @@ export function addLike(data) {
   };
 }
 
-export function addLikeSuccess(like) {
+export function addLikeSuccess() {
   return {
     type: LIKE_SUCCESS,
     like,
@@ -85,6 +82,48 @@ export function addLikeSuccess(like) {
 }
 
 export function addLikeFailure(error) {
+  Sentry.captureException(error);
+
+  return {
+    type: LIKE_FAILURE,
+    error,
+  };
+}
+
+export function removeLike(data) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      api
+        .mutate({
+          mutation: GQL_REMOVE_LIKE,
+          variables: data,
+        })
+        .then(resp => {
+          let { removeLike } = resp.data;
+          if (removeLike.ok) {
+            resolve({ checkin: data.checkin });
+            return dispatch(removeLikeSuccess({ checkin: data.checkin }));
+          } else {
+            reject(removeLike.errors);
+            return dispatch(removeLikeFailure(removeLike.errors));
+          }
+        })
+        .catch(error => {
+          reject(error);
+          return dispatch(removeLikeFailure(error));
+        });
+    });
+  };
+}
+
+export function removeLikeSuccess(like) {
+  return {
+    type: LIKE_SUCCESS,
+    like,
+  };
+}
+
+export function removeLikeFailure(error) {
   Sentry.captureException(error);
 
   return {
