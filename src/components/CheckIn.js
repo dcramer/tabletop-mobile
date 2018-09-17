@@ -69,6 +69,7 @@ class Checkin extends Component {
             )}
             <Text style={styles.userName} numberOfLines={2} ellipsizeMode={'tail'}>
               {players[0].name}
+              {players.length > 1 ? ` (+ ${players.length - 1})` : ''}
             </Text>
           </TouchableOpacity>
           <Text style={styles.timestamp}>
