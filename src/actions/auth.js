@@ -55,17 +55,22 @@ export const clearSession = async () => {
 
 export const loginFacebook = () => {
   return dispatch => {
-    dispatch(login());
-    LoginManager.logInWithReadPermissions(['public_profile', 'user_friends', 'email']).then(
-      result => {
-        if (!result.isCancelled) {
-          dispatch(refreshSession());
+    return new Promise((resolve, reject) => {
+      dispatch(login());
+      LoginManager.logInWithReadPermissions(['public_profile', 'user_friends', 'email']).then(
+        result => {
+          if (!result.isCancelled) {
+            dispatch(refreshSession())
+              .then(resolve)
+              .catch(reject);
+          }
+        },
+        error => {
+          dispatch(loginFailure(error.message));
+          reject(error);
         }
-      },
-      error => {
-        dispatch(loginFailure(error.message));
-      }
-    );
+      );
+    });
   };
 };
 
