@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Sentry } from 'react-native-sentry';
 import { StyleSheet, FlatList, Text, View } from 'react-native';
+import { withNavigation } from 'react-navigation';
 
 import { getCollections } from '../actions/collections';
 import AlertCard from '../components/AlertCard';
@@ -17,7 +18,22 @@ class CollectionList extends Component {
 
   state = { loading: true, error: null, items: [], query: '' };
 
-  async componentDidMount() {
+  constructor(...args) {
+    super(...args);
+    this._willFocus = this.props.navigation.addListener('willFocus', payload => {
+      this.setState({ loading: true }, this.reload);
+    });
+  }
+
+  componentDidMount = () => {
+    this.reload();
+  };
+
+  componentWillUnmount = () => {
+    this._willFocus.remove();
+  };
+
+  reload = () => {
     this.props
       .getCollections({ createdBy: this.props.userId })
       .then(items => {
@@ -31,7 +47,7 @@ class CollectionList extends Component {
         this.setState({ error, loading: false });
         Sentry.captureException(error);
       });
-  }
+  };
 
   _renderItem = ({ item }) => {
     return <Collection collection={item} />;
@@ -84,4 +100,4 @@ const styles = StyleSheet.create({
 export default connect(
   null,
   { getCollections }
-)(CollectionList);
+)(withNavigation(CollectionList));

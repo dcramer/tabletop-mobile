@@ -5,6 +5,7 @@ export const CollectionFragment = gql`
     id
     name
     description
+    numGames
   }
 `;
 

@@ -36,9 +36,11 @@ class Collection extends Component {
               <Text style={styles.description}>{collection.description}</Text>
             )}
           </View>
-          <View style={styles.countContainer}>
-            <Text style={styles.count}>{collection.numGames.toLocaleString()}</Text>
-          </View>
+          {!!collection.numGames && (
+            <View style={styles.countContainer}>
+              <Text style={styles.count}>{collection.numGames.toLocaleString()}</Text>
+            </View>
+          )}
         </View>
       </Card>
     );

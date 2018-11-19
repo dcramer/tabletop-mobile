@@ -20,6 +20,28 @@ import {
   UpdateCollectionMutation,
 } from '../queries/collections';
 
+export function getCollection(params) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      api
+        .query({
+          query: ListCollectionsQuery,
+          variables: params,
+        })
+        .then(resp => {
+          if (resp.data.collections.length) {
+            resolve(resp.data.collections[0]);
+          } else {
+            reject(new Error('Collection not found'));
+          }
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  };
+}
+
 export function getCollections(params) {
   return dispatch => {
     return new Promise((resolve, reject) => {
@@ -139,6 +161,10 @@ export function removeGameFromCollectionCache(cache, collection, game, currentUs
   let queries = [
     {
       query: ListCollectionGamesQuery,
+      variables: { id: collection },
+    },
+    {
+      query: ListCollectionsQuery,
       variables: { id: collection },
     },
   ];

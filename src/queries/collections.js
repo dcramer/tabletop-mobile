@@ -6,7 +6,6 @@ export const ListCollectionsQuery = gql`
   query ListCollections($query: String, $game: UUID, $createdBy: UUID, $id: UUID) {
     collections(query: $query, game: $game, createdBy: $createdBy, id: $id) {
       ...CollectionFragment
-      numGames
     }
   }
   ${CollectionFragment}
@@ -88,7 +87,6 @@ export const UpdateCollectionMutation = gql`
       errors
       collection {
         ...CollectionFragment
-        numGames
       }
     }
   }
