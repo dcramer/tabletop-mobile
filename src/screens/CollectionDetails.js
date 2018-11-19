@@ -8,6 +8,7 @@ import { getCollectionGames } from '../actions/collections';
 import AlertCard from '../components/AlertCard';
 import Collection from '../components/Collection';
 import Game from '../components/Game';
+import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
 
 class GameList extends Component {
@@ -40,7 +41,7 @@ class GameList extends Component {
       );
     }
     return (
-      <View>
+      <View style={styles.gameListContainer}>
         <FlatList data={results} keyExtractor={this._keyExtractor} renderItem={this._renderItem} />
       </View>
     );
@@ -62,6 +63,7 @@ class CollectionDetails extends Component {
   static navigationOptions = ({ navigation }) => {
     let { collection } = navigation.state.params;
     return {
+      header: null,
       title: collection.name,
     };
   };
@@ -84,6 +86,14 @@ class CollectionDetails extends Component {
       });
   }
 
+  goToEdit = () => {
+    let { navigation } = this.props;
+    navigation.navigate('EditCollection', {
+      id: navigation.state.params.id,
+      collection: navigation.state.params.collection,
+    });
+  };
+
   render() {
     let { navigation } = this.props;
     let { collection } = navigation.state.params;
@@ -91,10 +101,21 @@ class CollectionDetails extends Component {
     let { loading, error, results } = this.state;
 
     return (
-      <ScrollView contentContainerStyle={styles.container}>
-        <Collection onPress={null} collection={collection} />
-        <GameList loading={loading} error={error} results={results} />
-      </ScrollView>
+      <View style={styles.container}>
+        <Header
+          title={collection.name}
+          leftActionText=""
+          leftActionOnPress={null}
+          rightActionOnPress={this.goToEdit}
+          rightActionText="Edit"
+        />
+        <View style={styles.container}>
+          <Collection onPress={null} collection={collection} />
+          <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator>
+            <GameList loading={loading} error={error} results={results} />
+          </ScrollView>
+        </View>
+      </View>
     );
   }
 }

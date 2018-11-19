@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withNavigation } from 'react-navigation';
 
 import CollectionList from '../components/CollectionList';
-import ModalHeader from '../components/ModalHeader';
+import Header from '../components/Header';
 
 class Collections extends Component {
   static navigationOptions = {
@@ -19,7 +19,7 @@ class Collections extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ModalHeader
+        <Header
           title="Collections"
           leftActionText={null}
           rightActionOnPress={this.goToAddCollection}

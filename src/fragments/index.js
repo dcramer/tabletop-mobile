@@ -4,6 +4,7 @@ export const CollectionFragment = gql`
   fragment CollectionFragment on Collection {
     id
     name
+    description
   }
 `;
 

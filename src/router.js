@@ -11,6 +11,7 @@ import AddPublisher from './screens/AddPublisher';
 import CollectionDetails from './screens/CollectionDetails';
 import Checkin from './screens/Checkin';
 import CheckinDetails from './screens/CheckinDetails';
+import EditCollection from './screens/EditCollection';
 import MultiRelationSelect from './screens/MultiRelationSelect';
 import RelationSelect from './screens/RelationSelect';
 import FriendSelect from './screens/FriendSelect';
@@ -44,6 +45,7 @@ const CollectionStack = createStackNavigator(
     Collections,
     CollectionDetails,
     AddCollection,
+    EditCollection,
   },
   {
     navigationOptions: { ...commonOptions },

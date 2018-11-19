@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
 
 import CustomPropTypes from '../propTypes';
-import { colors } from '../styles';
+import { colors, margins } from '../styles';
 import Card from '../components/Card';
 
 class Collection extends Component {
@@ -28,18 +28,45 @@ class Collection extends Component {
       onPress = this.goTo;
     }
     return (
-      <Card onPress={onPress}>
-        <Text style={styles.name}>{collection.name}</Text>
+      <Card onPress={onPress} style={this.props.style}>
+        <View style={styles.container}>
+          <View style={styles.nameContainer}>
+            <Text style={styles.name}>{collection.name}</Text>
+            {collection.description && (
+              <Text style={styles.description}>{collection.description}</Text>
+            )}
+          </View>
+          <View style={styles.countContainer}>
+            <Text style={styles.count}>{collection.numGames.toLocaleString()}</Text>
+          </View>
+        </View>
       </Card>
     );
   }
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+  nameContainer: {
+    flex: 1,
+    alignItems: 'flex-start',
+    flexDirection: 'column',
+  },
   name: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: 'bold',
     color: colors.default,
+  },
+  description: {
+    fontSize: 14,
+    marginTop: margins.half,
+    color: colors.light,
+  },
+  count: {
+    fontSize: 14,
+    color: colors.light,
   },
 });
 

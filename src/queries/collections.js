@@ -6,6 +6,7 @@ export const ListCollectionsQuery = gql`
   query ListCollections($query: String, $game: UUID, $createdBy: UUID, $id: UUID) {
     collections(query: $query, game: $game, createdBy: $createdBy, id: $id) {
       ...CollectionFragment
+      numGames
     }
   }
   ${CollectionFragment}
@@ -23,8 +24,8 @@ export const ListCollectionGamesQuery = gql`
 `;
 
 export const AddCollectionMutation = gql`
-  mutation AddCollection($name: String!) {
-    addCollection(name: $name) {
+  mutation AddCollection($name: String!, $description: String) {
+    addCollection(name: $name, description: $description) {
       ok
       errors
       collection {
@@ -70,18 +71,25 @@ export const RemoveGameFromCollectionMutation = gql`
 `;
 
 export const UpdateCollectionMutation = gql`
-  mutation UpdateCollection($collection: UUID!, $name: String!, $games: [UUID]) {
-    updateCollection(collection: $collection, name: $name, games: $games) {
+  mutation UpdateCollection(
+    $collection: UUID!
+    $name: String
+    $description: String
+    $games: [UUID]
+  ) {
+    updateCollection(
+      collection: $collection
+      name: $name
+      description: $description
+      games: $games
+    ) {
       ok
       errors
       collection {
         ...CollectionFragment
-        games {
-          ...GameFragment
-        }
+        numGames
       }
     }
   }
   ${CollectionFragment}
-  ${GameFragment}
 `;

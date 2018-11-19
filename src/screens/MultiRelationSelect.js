@@ -8,7 +8,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { colors, margins } from '../styles';
 import AlertCard from '../components/AlertCard';
 import Card from '../components/Card';
-import ModalHeader from '../components/ModalHeader';
+import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
 import SearchBar from '../components/SearchBar';
 
@@ -159,7 +159,7 @@ class MultiRelationSelect extends Component {
     let { addScreen, nounSingular, onQuery, title } = navigation.state.params;
     return (
       <View style={styles.container}>
-        <ModalHeader rightActionOnPress={this.onDone} title={title} />
+        <Header rightActionOnPress={this.onDone} title={title} />
         <View style={styles.search}>
           <SearchBar onChangeValue={query => this.setState({ query })} />
         </View>

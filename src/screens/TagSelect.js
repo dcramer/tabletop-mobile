@@ -7,7 +7,7 @@ import { colors, margins } from '../styles';
 import Card from '../components/Card';
 import FormLabel from '../components/FormLabel';
 import TagList from '../components/TagList';
-import ModalHeader from '../components/ModalHeader';
+import Header from '../components/Header';
 
 class TagSelect extends Component {
   static navigationOptions = {
@@ -50,7 +50,7 @@ class TagSelect extends Component {
 
     return (
       <ScrollView style={styles.container}>
-        <ModalHeader rightActionOnPress={this.onDone} title={title} />
+        <Header rightActionOnPress={this.onDone} title={title} />
         <View style={styles.search}>
           <SearchBar
             lightTheme

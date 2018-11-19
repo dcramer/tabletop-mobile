@@ -8,7 +8,7 @@ import { Sentry } from 'react-native-sentry';
 import { colors } from '../styles';
 import { getLocations } from '../actions/locations';
 import Card from '../components/Card';
-import ModalHeader from '../components/ModalHeader';
+import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
 import SearchBar from '../components/SearchBar';
 
@@ -114,7 +114,7 @@ class LocationSelect extends Component {
     let { title } = navigation.state.params;
     return (
       <View style={styles.container}>
-        <ModalHeader title={title} />
+        <Header title={title} />
         <View style={styles.search}>
           <SearchBar onChangeValue={query => this.setState({ query })} />
         </View>

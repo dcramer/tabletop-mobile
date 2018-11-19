@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { getUsers } from '../actions/users';
 import { colors } from '../styles';
 import Activity from '../components/Activity';
-import ModalHeader from '../components/ModalHeader';
+import Header from '../components/Header';
 import FriendAction from '../components/FriendAction';
 
 class UserProfile extends Component {
@@ -56,7 +56,7 @@ class UserProfile extends Component {
     if (this.state.loading) return null;
     return (
       <View style={styles.container}>
-        <ModalHeader
+        <Header
           title={this.state.user.name}
           leftActionText={null}
           rightAction={<FriendAction userId={this.state.userId} color={colors.background} />}

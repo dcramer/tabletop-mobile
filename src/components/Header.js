@@ -5,7 +5,7 @@ import { withNavigation } from 'react-navigation';
 
 import { layout, margins } from '../styles';
 
-class ModalHeader extends Component {
+class Header extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     title: PropTypes.string.isRequired,
@@ -32,8 +32,8 @@ class ModalHeader extends Component {
   }
 
   render() {
-    let { leftActionOnPress } = this.props;
-    if (leftActionOnPress === undefined) {
+    let { leftActionOnPress, leftActionText } = this.props;
+    if (leftActionOnPress === undefined && leftActionText) {
       leftActionOnPress = () => this.props.navigation.goBack();
     }
     return (
@@ -89,4 +89,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withNavigation(ModalHeader);
+export default withNavigation(Header);

@@ -7,7 +7,7 @@ import { logOut } from '../actions/auth';
 import Activity from '../components/Activity';
 import ButtonGroup from '../components/ButtonGroup';
 import FriendList from '../components/FriendList';
-import ModalHeader from '../components/ModalHeader';
+import Header from '../components/Header';
 
 class MyProfile extends Component {
   static propTypes = {
@@ -40,7 +40,7 @@ class MyProfile extends Component {
     if (this.state.loading) return null;
     return (
       <View style={styles.container}>
-        <ModalHeader
+        <Header
           title="Profile"
           leftActionText="Friends"
           leftActionOnPress={this.goToFriends}

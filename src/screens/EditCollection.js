@@ -4,25 +4,26 @@ import PropTypes from 'prop-types';
 import { ScrollView, StyleSheet, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import { addCollection } from '../actions/collections';
+import { updateCollection } from '../actions/collections';
 import { colors, margins } from '../styles';
 import TextField from '../components/forms/TextField';
 
-class AddCollection extends Component {
+class EditCollection extends Component {
   static propTypes = {
     navigation: PropTypes.object.isRequired,
   };
 
   static navigationOptions = {
-    title: 'Add Collection',
+    title: 'Edit Collection',
   };
 
   constructor(...args) {
     super(...args);
     let { navigation } = this.props;
+    let collection = navigation.getParam('collection');
     this.state = {
-      name: navigation.getParam('name') || '',
-      description: '',
+      name: collection.name,
+      description: collection.description,
       error: null,
       submitting: false,
     };
@@ -39,11 +40,11 @@ class AddCollection extends Component {
     let { navigation } = this.props;
     this.setState({ error: null, submitting: true });
     this.props
-      .addCollection(
+      .updateCollection(
         {
+          collection: navigation.getParam('id'),
           name: state.name,
           description: state.description,
-          games: state.games || [],
         },
         this.props.auth.user
       )
@@ -78,13 +79,12 @@ class AddCollection extends Component {
           value={this.state.name}
         />
         <TextField
-          onChangeValue={v => this.onChangeValue('name', v)}
+          onChangeValue={v => this.onChangeValue('description', v)}
           name="Description"
-          placeholder=""
           value={this.state.description}
         />
         <Button
-          title="Add Collection"
+          title="Save Changes"
           onPress={this.onSubmit}
           containerViewStyle={styles.buttonContainer}
           disabled={!this.isValid() || this.state.submitting}
@@ -96,10 +96,6 @@ class AddCollection extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-  },
   buttonContainer: {
     marginTop: margins.full,
     marginBottom: margins.full,
@@ -113,5 +109,5 @@ const styles = StyleSheet.create({
 
 export default connect(
   ({ auth }) => ({ auth }),
-  { addCollection }
-)(AddCollection);
+  { updateCollection }
+)(EditCollection);

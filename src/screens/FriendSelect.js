@@ -11,7 +11,7 @@ import { getUsers } from '../actions/users';
 import AlertCard from '../components/AlertCard';
 import Card from '../components/Card';
 import LoadingIndicator from '../components/LoadingIndicator';
-import ModalHeader from '../components/ModalHeader';
+import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
 
 class UserEntry extends Component {
@@ -135,7 +135,7 @@ class FriendSelect extends Component {
     let results = this.state.items.filter(i => i.displayName.indexOf(this.state.query) !== -1);
     return (
       <View style={styles.container}>
-        <ModalHeader rightActionOnPress={this.onDone} title="Tag Friends" />
+        <Header rightActionOnPress={this.onDone} title="Tag Friends" />
         {this.state.items.length === 0 ? (
           <AlertCard
             heading="It's lonely in here"
