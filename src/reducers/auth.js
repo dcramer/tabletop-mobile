@@ -20,11 +20,15 @@ export default (state = initialState, action) => {
         ...state,
         isAuthenticating: true,
         loginError: false,
+        loginErrorMessage: '',
       };
     case LOGIN_SUCCESS:
       return {
+        ...state,
         validToken: true,
         isAuthenticating: false,
+        loginError: false,
+        loginErrorMessage: '',
         user: action.user,
       };
     case LOGIN_FAILURE:

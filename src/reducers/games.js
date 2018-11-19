@@ -14,6 +14,12 @@ export default (state = initialState, action) => {
         addGameError: true,
         addGameErrorMessage: action.error.message,
       };
+    case ADD_GAME_SUCCESS:
+      return {
+        ...state,
+        addGameError: false,
+        addGameErrorMessage: '',
+      };
     default:
       return state;
   }

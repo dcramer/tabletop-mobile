@@ -4,7 +4,7 @@ import idx from 'idx';
 import { createBottomTabNavigator, createStackNavigator } from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-import Activity from './screens/Activity';
+import Collections from './screens/Collections';
 import AddGame from './screens/AddGame';
 import AddPublisher from './screens/AddPublisher';
 import Checkin from './screens/Checkin';
@@ -55,7 +55,7 @@ const HomeStack = createStackNavigator(
 const MainStack = createBottomTabNavigator(
   {
     HomeStack,
-    Activity,
+    Collections,
     Notifications,
     MyProfile,
   },
@@ -67,8 +67,8 @@ const MainStack = createBottomTabNavigator(
         let iconName;
         if (routeName === 'HomeStack') {
           iconName = `home`;
-        } else if (routeName === 'Activity') {
-          iconName = `map`;
+        } else if (routeName === 'Collections') {
+          iconName = `list`;
         } else if (routeName === 'Notifications') {
           iconName = `bell`;
         } else if (routeName === 'MyProfile') {

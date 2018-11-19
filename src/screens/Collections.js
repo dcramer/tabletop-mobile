@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import CollectionList from '../components/CollectionList';
 
-export default class Activity extends Component {
+class Collections extends Component {
   static navigationOptions = {
-    title: 'Activity',
+    title: 'Collections',
   };
 
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.title}>Activity</Text>
+        <CollectionList userId={this.props.user.id} />
       </View>
     );
   }
@@ -18,13 +20,7 @@ export default class Activity extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  title: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
   },
 });
+
+export default connect(({ auth }) => ({ user: auth.user }))(Collections);

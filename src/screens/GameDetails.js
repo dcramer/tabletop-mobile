@@ -47,7 +47,6 @@ class GameDetails extends Component {
         />
         <Button
           title="Add to collection"
-          onPress={this._onCheckin}
           containerViewStyle={styles.buttonContainer}
           color={colors.background}
           backgroundColor={colors.primary}

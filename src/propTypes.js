@@ -12,7 +12,12 @@ export const Location = PropTypes.shape({
   name: PropTypes.string.isRequired,
 });
 
-export const Publisher = PropTypes.shape({
+export const Collection = PropTypes.shape({
+  id: PropTypes.string,
+  name: PropTypes.string.isRequired,
+});
+
+export const Entity = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string.isRequired,
 });
@@ -43,7 +48,8 @@ export const Checkin = PropTypes.shape({
 
 export default {
   Checkin,
+  Collection,
+  Entity,
   Game,
-  Publisher,
   User,
 };
