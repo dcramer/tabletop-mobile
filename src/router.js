@@ -11,6 +11,7 @@ import AddPublisher from './screens/AddPublisher';
 import CollectionDetails from './screens/CollectionDetails';
 import Checkin from './screens/Checkin';
 import CheckinDetails from './screens/CheckinDetails';
+import MultiRelationSelect from './screens/MultiRelationSelect';
 import RelationSelect from './screens/RelationSelect';
 import FriendSelect from './screens/FriendSelect';
 import FindFriends from './screens/FindFriends';
@@ -122,6 +123,7 @@ export const RootNavigator = createStackNavigator(
     Main: {
       screen: MainStack,
     },
+    MultiRelationSelect,
     RelationSelect,
     LocationSelect,
     FriendSelect,
