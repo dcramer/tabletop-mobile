@@ -1,5 +1,4 @@
 import { Sentry } from 'react-native-sentry';
-import gql from 'graphql-tag';
 
 import {
   ADD_GAME_SUCCESS,
@@ -7,79 +6,16 @@ import {
   UPDATE_GAME_SUCCESS,
   UPDATE_GAME_FAILURE,
 } from '../reducers/games';
+import { ListCollectionsQuery, ListCollectionGamesQuery } from '../queries/collections';
+import { ListGamesQuery, AddGameMutation, UpdateGameMutation } from '../queries/games';
 import api from '../api';
-
-export const GQL_GAME_FRAGMENT = gql`
-  fragment GameFragment on Game {
-    id
-    name
-    image {
-      url
-      width
-      height
-    }
-    yearPublished
-    minPlayers
-    maxPlayers
-    duration
-  }
-`;
-
-export const GQL_LIST_GAMES = gql`
-  query Game($query: String) {
-    games(query: $query) {
-      ...GameFragment
-    }
-  }
-  ${GQL_GAME_FRAGMENT}
-`;
-
-export const GQL_ADD_GAME = gql`
-  mutation AddGame(
-    $name: String!
-    $yearPublished: Int
-    $minPlayers: Int
-    $maxPlayers: Int
-    $duration: Int
-    $durationType: DurationType
-  ) {
-    addGame(
-      name: $name
-      yearPublished: $yearPublished
-      minPlayers: $minPlayers
-      maxPlayers: $maxPlayers
-      duration: $duration
-      durationType: $durationType
-    ) {
-      ok
-      errors
-      game {
-        ...GameFragment
-      }
-    }
-  }
-  ${GQL_GAME_FRAGMENT}
-`;
-
-export const GQL_UPDATE_GAME = gql`
-  mutation UpdateGame($game: UUID!, $collections: [UUID]) {
-    updateGame(game: $game, collections: $collections) {
-      ok
-      errors
-      game {
-        ...GameFragment
-      }
-    }
-  }
-  ${GQL_GAME_FRAGMENT}
-`;
 
 export function getGames(params) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       api
         .query({
-          query: GQL_LIST_GAMES,
+          query: ListGamesQuery,
           variables: params,
         })
         .then(resp => {
@@ -97,8 +33,13 @@ export function addGame(data) {
     return new Promise((resolve, reject) => {
       api
         .mutate({
-          mutation: GQL_ADD_GAME,
+          mutation: AddGameMutation,
           variables: data,
+          refetchQueries: [
+            {
+              query: ListGamesQuery,
+            },
+          ],
         })
         .then(resp => {
           let { addGame } = resp.data;
@@ -118,13 +59,29 @@ export function addGame(data) {
   };
 }
 
-export function updateGame(data) {
+export function updateGame(data, currentUser) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      let refetchQueries = [];
+      if (data.collections !== undefined) {
+        if (currentUser) {
+          refetchQueries.push({
+            query: ListCollectionsQuery,
+            variables: { createdBy: currentUser.id, game: data.game },
+          });
+        }
+        refetchQueries.push(
+          ...data.collections.map(id => ({
+            query: ListCollectionGamesQuery,
+            variables: { id },
+          }))
+        );
+      }
       api
         .mutate({
-          mutation: GQL_UPDATE_GAME,
+          mutation: UpdateGameMutation,
           variables: data,
+          refetchQueries,
         })
         .then(resp => {
           let { updateGame } = resp.data;

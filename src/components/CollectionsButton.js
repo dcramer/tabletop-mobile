@@ -6,20 +6,23 @@ import { withNavigation } from 'react-navigation';
 
 import { getCollections } from '../actions/collections';
 import { updateGame } from '../actions/games';
-import { colors } from '../styles';
 import CustomPropTypes from '../propTypes';
 
 class CollectionsButton extends Component {
   static propTypes = {
+    auth: CustomPropTypes.Auth.isRequired,
     game: CustomPropTypes.Game.isRequired,
     style: ViewPropTypes.style,
   };
 
   updateCollections = collections => {
-    this.props.updateGame({
-      game: this.props.game.id,
-      collections: collections.map(c => c.id),
-    });
+    this.props.updateGame(
+      {
+        game: this.props.game.id,
+        collections: collections.map(c => c.id),
+      },
+      this.props.auth.user
+    );
   };
 
   onPress = () => {

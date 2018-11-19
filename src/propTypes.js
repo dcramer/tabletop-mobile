@@ -7,6 +7,10 @@ export const User = PropTypes.shape({
   avatar: PropTypes.string,
 });
 
+export const Auth = PropTypes.shape({
+  user: User,
+});
+
 export const Location = PropTypes.shape({
   id: PropTypes.string,
   name: PropTypes.string.isRequired,
@@ -47,6 +51,7 @@ export const Checkin = PropTypes.shape({
 });
 
 export default {
+  Auth,
   Checkin,
   Collection,
   Entity,

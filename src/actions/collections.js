@@ -1,6 +1,6 @@
 import { Sentry } from 'react-native-sentry';
-import gql from 'graphql-tag';
 
+import api from '../api';
 import {
   ADD_COLLECTION_SUCCESS,
   ADD_COLLECTION_FAILURE,
@@ -11,103 +11,21 @@ import {
   UPDATE_COLLECTION_SUCCESS,
   UPDATE_COLLECTION_FAILURE,
 } from '../reducers/collections';
-import api from '../api';
-
-import { GQL_GAME_FRAGMENT } from './games';
-
-export const GQL_COLLECTION_FRAGMENT = gql`
-  fragment CollectionFragment on Collection {
-    id
-    name
-  }
-`;
-
-export const GQL_LIST_COLLECTIONS = gql`
-  query ListCollections($query: String, $game: UUID, $createdBy: UUID, $id: UUID) {
-    collections(query: $query, game: $game, createdBy: $createdBy, id: $id) {
-      ...CollectionFragment
-    }
-  }
-  ${GQL_COLLECTION_FRAGMENT}
-`;
-
-export const GQL_LIST_COLLECTION_GAMES = gql`
-  query ListCollectionGames($id: UUID) {
-    collections(id: $id) {
-      games {
-        ...GameFragment
-      }
-    }
-  }
-  ${GQL_GAME_FRAGMENT}
-`;
-
-export const GQL_ADD_COLLECTION = gql`
-  mutation AddCollection($name: String!) {
-    addCollection(name: $name) {
-      ok
-      errors
-      collection {
-        ...CollectionFragment
-      }
-    }
-  }
-  ${GQL_COLLECTION_FRAGMENT}
-`;
-
-export const GQL_ADD_GAME_TO_COLLECTION = gql`
-  mutation AddGameToCollection($collection: UUID!, $game: UUID!) {
-    addGameToCollection(collection: $collection, game: $game) {
-      ok
-      errors
-      collection {
-        ...CollectionFragment
-      }
-      game {
-        ...GameFragment
-      }
-    }
-  }
-  ${GQL_GAME_FRAGMENT}
-  ${GQL_COLLECTION_FRAGMENT}
-`;
-
-export const GQL_REMOVE_GAME_FROM_COLLECTION = gql`
-  mutation RemoveGameFromCollection($collection: UUID!, $game: UUID!) {
-    removeGameFromCollection(collection: $collection, game: $game) {
-      ok
-      errors
-      collection {
-        ...CollectionFragment
-      }
-      game {
-        ...GameFragment
-      }
-    }
-  }
-  ${GQL_GAME_FRAGMENT}
-  ${GQL_COLLECTION_FRAGMENT}
-`;
-
-export const GQL_UPDATE_COLLECTION = gql`
-  mutation UpdateCollection($collection: UUID!, $name: String!, $games: [UUID]) {
-    updateCollection(collection: $collection, name: $name, games: $games) {
-      ok
-      errors
-      collection {
-        ...CollectionFragment
-      }
-    }
-  }
-  ${GQL_COLLECTION_FRAGMENT}
-`;
+import {
+  ListCollectionsQuery,
+  ListCollectionGamesQuery,
+  AddCollectionMutation,
+  AddGameToCollectionMutation,
+  RemoveGameFromCollectionMutation,
+  UpdateCollectionMutation,
+} from '../queries/collections';
 
 export function getCollections(params) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       api
         .query({
-          query: GQL_LIST_COLLECTIONS,
+          query: ListCollectionsQuery,
           variables: params,
         })
         .then(resp => {
@@ -125,7 +43,7 @@ export function getCollectionGames(params) {
     return new Promise((resolve, reject) => {
       api
         .query({
-          query: GQL_LIST_COLLECTION_GAMES,
+          query: ListCollectionGamesQuery,
           variables: params,
         })
         .then(resp => {
@@ -138,13 +56,22 @@ export function getCollectionGames(params) {
   };
 }
 
-export function addCollection(data) {
-  return dispatch => {
+export function addCollection(data, currentUser) {
+  return (dispatch, getState) => {
     return new Promise((resolve, reject) => {
+      console.error(getState());
       api
         .mutate({
-          mutation: GQL_ADD_COLLECTION,
+          mutation: AddCollectionMutation,
           variables: data,
+          refetchQueries: currentUser
+            ? [
+                {
+                  query: ListCollectionsQuery,
+                  variables: { createdBy: currentUser.id },
+                },
+              ]
+            : [],
         })
         .then(resp => {
           let { addCollection } = resp.data;
@@ -169,7 +96,7 @@ export function addGameToCollection(data) {
     return new Promise((resolve, reject) => {
       api
         .mutate({
-          mutation: GQL_ADD_GAME_TO_COLLECTION,
+          mutation: AddGameToCollectionMutation,
           variables: data,
         })
         .then(resp => {
@@ -197,7 +124,7 @@ export function removeGameFromCollection(data) {
     return new Promise((resolve, reject) => {
       api
         .mutate({
-          mutation: GQL_ADD_GAME_TO_COLLECTION,
+          mutation: RemoveGameFromCollectionMutation,
           variables: data,
         })
         .then(resp => {
@@ -223,13 +150,29 @@ export function removeGameFromCollection(data) {
   };
 }
 
-export function updateCollection(data) {
+export function updateCollection(data, currentUser) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      let refetchQueries = [
+        {
+          query: ListCollectionGamesQuery,
+          variables: { id: data.collection },
+        },
+      ];
+      if (data.games && currentUser) {
+        refetchQueries.push(
+          ...data.games.map(gId => ({
+            query: ListCollectionsQuery,
+            variables: { createdBy: currentUser.id, game: gId },
+          }))
+        );
+      }
+
       api
         .mutate({
-          mutation: GQL_UPDATE_COLLECTION,
+          mutation: UpdateCollectionMutation,
           variables: data,
+          refetchQueries,
         })
         .then(resp => {
           let { updateCollection } = resp.data;

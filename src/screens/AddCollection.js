@@ -38,10 +38,13 @@ class AddCollection extends Component {
     let { navigation } = this.props;
     this.setState({ error: null, submitting: true });
     this.props
-      .addCollection({
-        name: state.name,
-        games: state.games || [],
-      })
+      .addCollection(
+        {
+          name: state.name,
+          games: state.games || [],
+        },
+        this.props.auth.user
+      )
       .then(collection => {
         navigation.replace('CollectionDetails', {
           id: collection.id,
@@ -100,6 +103,6 @@ const styles = StyleSheet.create({
 });
 
 export default connect(
-  null,
+  ({ auth }) => ({ auth }),
   { addCollection }
 )(AddCollection);

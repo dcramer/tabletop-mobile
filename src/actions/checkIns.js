@@ -10,7 +10,7 @@ import {
   UNLIKE_CHECKIN_FAILURE,
   UNLIKE_CHECKIN_SUCCESS,
 } from '../reducers/checkins';
-import { GQL_GAME_FRAGMENT } from './games';
+import { GameFragment } from '../fragments';
 import api from '../api';
 
 const GQL_CHECKIN_FRAGMENT = gql`
@@ -28,7 +28,7 @@ const GQL_CHECKIN_FRAGMENT = gql`
     isLiked
     createdAt
   }
-  ${GQL_GAME_FRAGMENT}
+  ${GameFragment}
 `;
 
 const GQL_LIST_CHECKINS = gql`
