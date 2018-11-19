@@ -35,11 +35,6 @@ export function addGame(data) {
         .mutate({
           mutation: AddGameMutation,
           variables: data,
-          refetchQueries: [
-            {
-              query: ListGamesQuery,
-            },
-          ],
         })
         .then(resp => {
           let { addGame } = resp.data;
@@ -62,32 +57,31 @@ export function addGame(data) {
 export function updateGame(data, currentUser) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      let refetchQueries = [];
-      if (currentUser) {
-        refetchQueries.push({
-          query: ListCollectionsQuery,
-          variables: { createdBy: currentUser.id },
-        });
-      }
-      if (data.collections !== undefined) {
-        if (currentUser) {
-          refetchQueries.push({
-            query: ListCollectionsQuery,
-            variables: { createdBy: currentUser.id, game: data.game },
-          });
-        }
-        refetchQueries.push(
-          ...data.collections.map(id => ({
-            query: ListCollectionGamesQuery,
-            variables: { id },
-          }))
-        );
-      }
+      // let refetchQueries = [];
+      // if (currentUser) {
+      //   refetchQueries.push({
+      //     query: ListCollectionsQuery,
+      //     variables: { createdBy: currentUser.id },
+      //   });
+      // }
+      // if (data.collections !== undefined) {
+      //   if (currentUser) {
+      //     refetchQueries.push({
+      //       query: ListCollectionsQuery,
+      //       variables: { createdBy: currentUser.id, game: data.game },
+      //     });
+      //   }
+      //   refetchQueries.push(
+      //     ...data.collections.map(id => ({
+      //       query: ListCollectionGamesQuery,
+      //       variables: { id },
+      //     }))
+      //   );
+      // }
       api
         .mutate({
           mutation: UpdateGameMutation,
           variables: data,
-          refetchQueries,
         })
         .then(resp => {
           let { updateGame } = resp.data;
