@@ -78,6 +78,10 @@ class CollectionDetails extends Component {
     getCollectionGames: PropTypes.func.isRequired,
   };
 
+  static navigationOptions = {
+    header: null,
+  };
+
   constructor(...args) {
     super(...args);
 
