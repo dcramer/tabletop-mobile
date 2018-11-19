@@ -167,7 +167,7 @@ class CollectionDetails extends Component {
     return (
       <View style={styles.container}>
         <Header
-          title={collection.name}
+          title="Collection Details"
           leftActionText=""
           leftActionOnPress={null}
           rightActionOnPress={this.goToEdit}
