@@ -54,7 +54,7 @@ class AddGame extends Component {
         durationType: state.durationType || null,
       })
       .then(game => {
-        navigation.navigate('GameDetails', {
+        navigation.replace('GameDetails', {
           id: game.id,
           game,
         });

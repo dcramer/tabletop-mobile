@@ -5,8 +5,10 @@ import { createBottomTabNavigator, createStackNavigator } from 'react-navigation
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import Collections from './screens/Collections';
+import AddCollection from './screens/AddCollection';
 import AddGame from './screens/AddGame';
 import AddPublisher from './screens/AddPublisher';
+import CollectionDetails from './screens/CollectionDetails';
 import Checkin from './screens/Checkin';
 import CheckinDetails from './screens/CheckinDetails';
 import RelationSelect from './screens/RelationSelect';
@@ -36,6 +38,17 @@ const commonOptions = {
   },
 };
 
+const CollectionStack = createStackNavigator(
+  {
+    Collections,
+    CollectionDetails,
+    AddCollection,
+  },
+  {
+    navigationOptions: { ...commonOptions },
+  }
+);
+
 const HomeStack = createStackNavigator(
   {
     Home,
@@ -54,18 +67,22 @@ const HomeStack = createStackNavigator(
 
 const MainStack = createBottomTabNavigator(
   {
-    HomeStack,
-    Collections,
+    Home: {
+      screen: HomeStack,
+    },
+    Collections: {
+      screen: CollectionStack,
+    },
     Notifications,
     MyProfile,
   },
   {
-    initialRouteName: 'HomeStack',
+    initialRouteName: 'Home',
     navigationOptions: ({ navigation }) => {
       const { routeName } = navigation.state;
       const TabBarIcon = ({ focused, tintColor }) => {
         let iconName;
-        if (routeName === 'HomeStack') {
+        if (routeName === 'Home') {
           iconName = `home`;
         } else if (routeName === 'Collections') {
           iconName = `list`;
@@ -129,6 +146,8 @@ export const RootNavigator = createStackNavigator(
         case 'HomeStack':
         case 'MyProfile':
         case 'UserProfile':
+        case 'Collections':
+        case 'CollectionStack':
           header = null;
           break;
       }

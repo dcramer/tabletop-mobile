@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Image, StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import { withNavigation } from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import CustomPropTypes from '../propTypes';
-import { colors, margins } from '../styles';
+import { colors } from '../styles';
 import Card from '../components/Card';
 
 class Collection extends Component {
@@ -26,7 +25,7 @@ class Collection extends Component {
   render() {
     let { onPress, collection } = this.props;
     if (onPress === undefined) {
-      onPress = this.goToProfile;
+      onPress = this.goTo;
     }
     return (
       <Card onPress={onPress} style={styles.container}>
