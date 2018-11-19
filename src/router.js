@@ -143,11 +143,10 @@ export const RootNavigator = createStackNavigator(
         case 'Notifications':
           title = 'Notifications';
           break;
-        case 'HomeStack':
+        case 'Home':
         case 'MyProfile':
         case 'UserProfile':
         case 'Collections':
-        case 'CollectionStack':
           header = null;
           break;
       }
