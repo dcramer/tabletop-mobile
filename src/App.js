@@ -10,7 +10,7 @@ import Loading from './screens/Loading';
 
 class App extends Component {
   async componentWillMount() {
-    await this.props.refreshSession();
+    await this.props.refreshSession(true);
   }
 
   render() {

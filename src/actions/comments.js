@@ -11,7 +11,7 @@ const GQL_COMMENT_FRAGMENT = gql`
   }
 `;
 
-const GQL_LIST_COMMENTs = gql`
+const GQL_LIST_COMMENTS = gql`
   query CommentsQuery($createdBy: UUID, $checkin: UUID) {
     comments(createdBy: $createdBy, checkin: $checkin) {
       ...CommentFragment
@@ -30,7 +30,7 @@ const GQL_ADD_COMMENT = gql`
       }
     }
   }
-  ${GQL_COMENT_FRAGMENT}
+  ${GQL_COMMENT_FRAGMENT}
 `;
 
 export function getComments(params) {
@@ -38,7 +38,7 @@ export function getComments(params) {
     return new Promise((resolve, reject) => {
       api
         .query({
-          query: GQL_LIST_COMMEJNTS,
+          query: GQL_LIST_COMMENTS,
           variables: params,
         })
         .then(resp => {

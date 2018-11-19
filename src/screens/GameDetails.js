@@ -45,6 +45,13 @@ class GameDetails extends Component {
           color={colors.background}
           backgroundColor={colors.primary}
         />
+        <Button
+          title="Add to collection"
+          onPress={this._onCheckin}
+          containerViewStyle={styles.buttonContainer}
+          color={colors.background}
+          backgroundColor={colors.primary}
+        />
         <Panel
           title="Recent Activity"
           header={

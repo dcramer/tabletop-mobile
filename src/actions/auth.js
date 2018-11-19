@@ -1,4 +1,4 @@
-import { Alert, AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native';
 import { AccessToken, LoginManager } from 'react-native-fbsdk';
 import { Sentry } from 'react-native-sentry';
 import gql from 'graphql-tag';
@@ -74,7 +74,7 @@ export const loginFacebook = () => {
   };
 };
 
-export function refreshSession() {
+export function refreshSession(silent = false) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       AccessToken.getCurrentAccessToken()
@@ -93,17 +93,17 @@ export function refreshSession() {
                 dispatch(loginSuccess(login.user));
                 resolve();
               } else {
-                dispatch(loginFailure(login.errors));
+                dispatch(loginFailure(!silent ? login.errors : null));
                 reject(login.errors);
               }
             })
             .catch(error => {
-              dispatch(loginFailure(error.message));
+              dispatch(loginFailure(!silent ? error.message : null));
               reject(error);
             });
         })
         .catch(error => {
-          dispatch(loginFailure(error.message));
+          dispatch(loginFailure(!silent ? error.message : null));
           reject(error);
         });
     });

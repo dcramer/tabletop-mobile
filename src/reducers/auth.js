@@ -33,7 +33,7 @@ export default (state = initialState, action) => {
         validToken: false,
         isAuthenticating: false,
         loginError: true,
-        loginErrorMessage: action.error.message,
+        loginErrorMessage: action.error,
       };
     case LOGOUT:
       return {
