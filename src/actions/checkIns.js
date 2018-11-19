@@ -146,7 +146,7 @@ export function addCheckin(data) {
           }
         })
         .catch(error => {
-          Raven.captureException(error);
+          Sentry.captureException(error);
           reject(error);
           return dispatch(addCheckinFailure(error));
         });
@@ -207,7 +207,7 @@ export function addLike(data) {
           }
         })
         .catch(error => {
-          Raven.captureException(error);
+          Sentry.captureException(error);
           reject(error);
           return dispatch(addLikeFailure(error));
         });
@@ -250,7 +250,7 @@ export function removeLike(data) {
           }
         })
         .catch(error => {
-          Raven.captureException(error);
+          Sentry.captureException(error);
           reject(error);
           return dispatch(removeLikeFailure(error));
         });

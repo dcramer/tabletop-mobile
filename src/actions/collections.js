@@ -9,6 +9,8 @@ import {
 } from '../reducers/collections';
 import api from '../api';
 
+import { GQL_GAME_FRAGMENT } from './games';
+
 export const GQL_COLLECTION_FRAGMENT = gql`
   fragment CollectionFragment on Collection {
     id
@@ -23,6 +25,17 @@ export const GQL_LIST_COLLECTIONS = gql`
     }
   }
   ${GQL_COLLECTION_FRAGMENT}
+`;
+
+export const GQL_LIST_COLLECTION_GAMES = gql`
+  query ListCollectionGames($id: UUID) {
+    collections(id: $id) {
+      games {
+        ...GameFragment
+      }
+    }
+  }
+  ${GQL_GAME_FRAGMENT}
 `;
 
 export const GQL_ADD_COLLECTION = gql`
@@ -61,6 +74,24 @@ export function getCollections(params) {
         })
         .then(resp => {
           resolve(resp.data.collections);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+  };
+}
+
+export function getCollectionGames(params) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      api
+        .query({
+          query: GQL_LIST_COLLECTION_GAMES,
+          variables: params,
+        })
+        .then(resp => {
+          resolve(resp.data.collections[0].games);
         })
         .catch(error => {
           reject(error);

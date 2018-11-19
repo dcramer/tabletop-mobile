@@ -28,7 +28,7 @@ class Collection extends Component {
       onPress = this.goTo;
     }
     return (
-      <Card onPress={onPress} style={styles.container}>
+      <Card onPress={onPress}>
         <Text style={styles.name}>{collection.name}</Text>
       </Card>
     );
@@ -36,12 +36,6 @@ class Collection extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-start',
-  },
   name: {
     fontSize: 14,
     fontWeight: 'bold',
