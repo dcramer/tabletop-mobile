@@ -136,11 +136,44 @@ export function addGameToCollection(data, currentUser) {
         .mutate({
           mutation: AddGameToCollectionMutation,
           variables: data,
+          update: (cache, { data: { addGameToCollection } }) => {
+            let { collection, game } = addGameToCollection;
+
+            try {
+              let query = {
+                query: ListCollectionGamesQuery,
+                variables: { id: collection.id },
+              };
+
+              let { collections } = cache.readQuery(query);
+              cache.writeQuery({
+                ...query,
+                data: {
+                  collections: collections.map(c => {
+                    if (c.id !== collection.id || c.games === undefined) {
+                      return c;
+                    }
+                    let newGames = c.games.find(g => g.id === game.id)
+                      ? c.games
+                      : [...c.games, game];
+                    return {
+                      ...c,
+                      games: newGames,
+                      numGames: newGames.length,
+                    };
+                  }),
+                },
+              });
+            } catch (e) {}
+          },
         })
         .then(resp => {
           let { addGameToCollection } = resp.data;
           if (addGameToCollection.ok) {
-            resolve(addGameToCollection.collection, addGameToCollection.game);
+            resolve({
+              collection: addGameToCollection.collection,
+              game: addGameToCollection.game,
+            });
             return dispatch(
               addGameToCollectionSuccess(addGameToCollection.collection, addGameToCollection.game)
             );
@@ -212,23 +245,6 @@ export function removeGameFromCollectionCache(cache, collection, game, currentUs
 export function removeGameFromCollection(data, currentUser) {
   return dispatch => {
     return new Promise((resolve, reject) => {
-      // let refetchQueries = [
-      //   {
-      //     query: ListCollectionGamesQuery,
-      //     variables: { id: data.collection },
-      //   },
-      // ];
-      // if (currentUser) {
-      //   refetchQueries.push({
-      //     query: ListCollectionsQuery,
-      //     variables: { createdBy: currentUser.id, game: data.game },
-      //   });
-      //   refetchQueries.push({
-      //     query: ListCollectionsQuery,
-      //     variables: { createdBy: currentUser.id },
-      //   });
-      // }
-
       api
         .mutate({
           mutation: RemoveGameFromCollectionMutation,
@@ -240,7 +256,10 @@ export function removeGameFromCollection(data, currentUser) {
         .then(resp => {
           let { removeGameFromCollection } = resp.data;
           if (removeGameFromCollection.ok) {
-            resolve(removeGameFromCollection.collection, removeGameFromCollection.game);
+            resolve({
+              collection: removeGameFromCollection.collection,
+              game: removeGameFromCollection.game,
+            });
             return dispatch(
               removeGameFromCollectionSuccess(
                 removeGameFromCollection.collection,

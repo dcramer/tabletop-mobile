@@ -13,6 +13,11 @@ export default class SearchBar extends Component {
     style: ViewPropTypes.style,
     loading: PropTypes.bool,
     header: PropTypes.bool,
+    placeholder: PropTypes.string,
+  };
+
+  static defaultProps = {
+    placeholder: 'Search',
   };
 
   render() {
@@ -27,7 +32,7 @@ export default class SearchBar extends Component {
         inputStyle={[styles.input, this.props.header && styles.headerInput]}
         containerStyle={[styles.container, this.props.header && styles.headerContainer]}
         showLoadingIcon={this.props.loading}
-        placeholder="Search"
+        placeholder={this.props.placeholder}
       />
     );
   }

@@ -6,6 +6,7 @@ import { createLogger } from 'redux-logger';
 import thunkMiddleware from 'redux-thunk';
 import { Sentry } from 'react-native-sentry';
 import { ApolloProvider } from 'react-apollo';
+import Promise from 'bluebird';
 
 import api from './src/api';
 import App from './src/App';
@@ -14,6 +15,10 @@ import rootReducer from './src/reducers';
 Sentry.config('https://0dea694b33ed4112ba33163458d72df2@sentry.io/1252089', {
   environment: __DEV__ ? 'dev' : 'prod',
 }).install();
+
+Promise.config({
+  cancellation: true,
+});
 
 const loggerMiddleware = createLogger();
 

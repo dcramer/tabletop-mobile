@@ -6,6 +6,7 @@ import { withNavigation } from 'react-navigation';
 import Swipeout from 'react-native-swipeout';
 
 import {
+  addGameToCollection,
   getCollection,
   getCollectionGames,
   removeGameFromCollection,
@@ -13,6 +14,7 @@ import {
 import AlertCard from '../components/AlertCard';
 import Collection from '../components/Collection';
 import Game from '../components/Game';
+import GameSearchWithOverlay from '../components/GameSearchWithOverlay';
 import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
 
@@ -117,6 +119,23 @@ class CollectionDetails extends Component {
     // });
   }
 
+  onGameAdd = item => {
+    this.props
+      .addGameToCollection(
+        {
+          collection: this.state.collection.id,
+          game: item.id,
+        },
+        this.props.auth.user
+      )
+      .then(({ game }) => {
+        this.setState({
+          gameList: [...this.state.gameList, game],
+          collection: { ...this.state.collection, numGames: this.state.collection.numGames + 1 },
+        });
+      });
+  };
+
   onGameDelete = item => {
     this.props
       .removeGameFromCollection(
@@ -156,14 +175,18 @@ class CollectionDetails extends Component {
         />
         <View style={styles.container}>
           <Collection onPress={null} collection={collection} />
-          <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator>
-            <GameList
-              loading={loading}
-              error={error}
-              results={gameList}
-              onGameDelete={this.onGameDelete}
-            />
-          </ScrollView>
+          <GameSearchWithOverlay
+            placeholder="Add a game to this collection"
+            onPress={this.onGameAdd}>
+            <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator>
+              <GameList
+                loading={loading}
+                error={error}
+                results={gameList}
+                onGameDelete={this.onGameDelete}
+              />
+            </ScrollView>
+          </GameSearchWithOverlay>
         </View>
       </View>
     );
@@ -178,5 +201,5 @@ const styles = StyleSheet.create({
 
 export default connect(
   ({ auth }) => ({ auth }),
-  { getCollection, getCollectionGames, removeGameFromCollection }
+  { addGameToCollection, getCollection, getCollectionGames, removeGameFromCollection }
 )(withNavigation(CollectionDetails));

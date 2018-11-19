@@ -50,6 +50,7 @@
     "apollo-link-context": "^1.0.8",
     "babel-core": "7.0.0-bridge.0",
     "babel-preset-react-native": "^5.0.2",
+    "bluebird": "^3.5.3",
     "graphql": "^0.13.2",
     "idx": "^2.4.0",
     "moment": "^2.22.2",

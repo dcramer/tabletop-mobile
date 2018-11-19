@@ -1,4 +1,5 @@
 import { Sentry } from 'react-native-sentry';
+import Promise from 'bluebird';
 
 import {
   ADD_GAME_SUCCESS,
@@ -6,7 +7,6 @@ import {
   UPDATE_GAME_SUCCESS,
   UPDATE_GAME_FAILURE,
 } from '../reducers/games';
-import { ListCollectionsQuery, ListCollectionGamesQuery } from '../queries/collections';
 import { ListGamesQuery, AddGameMutation, UpdateGameMutation } from '../queries/games';
 import api from '../api';
 

@@ -14,6 +14,7 @@ class Game extends Component {
     navigation: PropTypes.object.isRequired,
     style: ViewPropTypes.style,
     canPress: PropTypes.bool,
+    onPress: PropTypes.func,
   };
 
   static defaultProps = {
@@ -26,7 +27,11 @@ class Game extends Component {
 
   _onPress = () => {
     let { game, navigation } = this.props;
-    navigation.navigate('GameDetails', { id: game.id, game });
+    if (this.props.onPress) {
+      this.props.onPress(game);
+    } else {
+      navigation.navigate('GameDetails', { id: game.id, game });
+    }
   };
 
   render() {
