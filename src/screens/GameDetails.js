@@ -7,6 +7,7 @@ import { withNavigation } from 'react-navigation';
 
 import { colors } from '../styles';
 import Activity from '../components/Activity';
+import AddToCollectionAction from '../components/AddToCollectionAction';
 import ButtonGroup from '../components/ButtonGroup';
 import Game from '../components/Game';
 import Panel from '../components/Panel';
@@ -45,12 +46,13 @@ class GameDetails extends Component {
           color={colors.background}
           backgroundColor={colors.primary}
         />
-        <Button
+        <AddToCollectionAction game={game} />
+        {/* <Button
           title="Add to collection"
           containerViewStyle={styles.buttonContainer}
           color={colors.background}
           backgroundColor={colors.primary}
-        />
+        /> */}
         <Panel
           title="Recent Activity"
           header={

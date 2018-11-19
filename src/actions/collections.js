@@ -4,6 +4,10 @@ import gql from 'graphql-tag';
 import {
   ADD_COLLECTION_SUCCESS,
   ADD_COLLECTION_FAILURE,
+  ADD_GAME_TO_COLLECTION_SUCCESS,
+  ADD_GAME_TO_COLLECTION_FAILURE,
+  REMOVE_GAME_FROM_COLLECTION_SUCCESS,
+  REMOVE_GAME_FROM_COLLECTION_FAILURE,
   UPDATE_COLLECTION_SUCCESS,
   UPDATE_COLLECTION_FAILURE,
 } from '../reducers/collections';
@@ -48,6 +52,40 @@ export const GQL_ADD_COLLECTION = gql`
       }
     }
   }
+  ${GQL_COLLECTION_FRAGMENT}
+`;
+
+export const GQL_ADD_GAME_TO_COLLECTION = gql`
+  mutation AddGameToCollection($collection: UUID!, $game: UUID!) {
+    addGameToCollection(collection: $collection, game: $game) {
+      ok
+      errors
+      collection {
+        ...CollectionFragment
+      }
+      game {
+        ...GameFragment
+      }
+    }
+  }
+  ${GQL_GAME_FRAGMENT}
+  ${GQL_COLLECTION_FRAGMENT}
+`;
+
+export const GQL_REMOVE_GAME_FROM_COLLECTION = gql`
+  mutation RemoveGameFromCollection($collection: UUID!, $game: UUID!) {
+    removeGameFromCollection(collection: $collection, game: $game) {
+      ok
+      errors
+      collection {
+        ...CollectionFragment
+      }
+      game {
+        ...GameFragment
+      }
+    }
+  }
+  ${GQL_GAME_FRAGMENT}
   ${GQL_COLLECTION_FRAGMENT}
 `;
 
@@ -126,6 +164,65 @@ export function addCollection(data) {
   };
 }
 
+export function addGameToCollection(data) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      api
+        .mutate({
+          mutation: GQL_ADD_GAME_TO_COLLECTION,
+          variables: data,
+        })
+        .then(resp => {
+          let { addGameToCollection } = resp.data;
+          if (addGameToCollection.ok) {
+            resolve(addCollection.collection);
+            return dispatch(
+              addGameToCollectionSuccess(addGameToCollection.collection, addGameToCollection.game)
+            );
+          } else {
+            reject(addCollection.errors);
+            return dispatch(addGameToCollectionFailure(addGameToCollection.errors));
+          }
+        })
+        .catch(error => {
+          reject(error);
+          return dispatch(addGameToCollectionFailure(error));
+        });
+    });
+  };
+}
+
+export function removeGameFromCollection(data) {
+  return dispatch => {
+    return new Promise((resolve, reject) => {
+      api
+        .mutate({
+          mutation: GQL_ADD_GAME_TO_COLLECTION,
+          variables: data,
+        })
+        .then(resp => {
+          let { addGameToCollection } = resp.data;
+          if (addGameToCollection.ok) {
+            resolve(addCollection.collection);
+            return dispatch(
+              removeGameFromCollectionSuccess(
+                addGameToCollection.collection,
+                addGameToCollection.game
+              )
+            );
+          } else {
+            reject(addCollection.errors);
+            return dispatch(removeGameFromCollectionFailure(addGameToCollection.errors));
+          }
+        })
+        .catch(error => {
+          reject(error);
+          return dispatch(removeGameFromCollectionFailure(error));
+        });
+    });
+  };
+}
+
 export function updateCollection(data) {
   return dispatch => {
     return new Promise((resolve, reject) => {
@@ -164,6 +261,40 @@ export function addCollectionFailure(error) {
 
   return {
     type: ADD_COLLECTION_FAILURE,
+    error,
+  };
+}
+
+export function addGameToCollectionSuccess(collection, game) {
+  return {
+    type: ADD_GAME_TO_COLLECTION_SUCCESS,
+    collection,
+    game,
+  };
+}
+
+export function addGameToCollectionFailure(error) {
+  Sentry.captureException(error);
+
+  return {
+    type: ADD_GAME_TO_COLLECTION_FAILURE,
+    error,
+  };
+}
+
+export function removeGameFromCollectionSuccess(collection, game) {
+  return {
+    type: REMOVE_GAME_FROM_COLLECTION_SUCCESS,
+    collection,
+    game,
+  };
+}
+
+export function removeGameFromCollectionFailure(error) {
+  Sentry.captureException(error);
+
+  return {
+    type: REMOVE_GAME_FROM_COLLECTION_FAILURE,
     error,
   };
 }

@@ -4,8 +4,6 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 import { colors } from '../styles';
 import CustomPropTypes from '../propTypes';
-import Game from './Game';
-import Card from './Card';
 
 class CommentAction extends Component {
   static propTypes = {
