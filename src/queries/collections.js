@@ -15,6 +15,7 @@ export const ListCollectionsQuery = gql`
 export const ListCollectionGamesQuery = gql`
   query ListCollectionGames($id: UUID) {
     collections(id: $id) {
+      id
       games {
         ...GameFragment
       }

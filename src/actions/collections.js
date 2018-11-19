@@ -47,7 +47,7 @@ export function getCollectionGames(params) {
           variables: params,
         })
         .then(resp => {
-          resolve(resp.data.collections[0].games);
+          resolve(resp.data.collections.length ? resp.data.collections[0].games : []);
         })
         .catch(error => {
           reject(error);
@@ -136,63 +136,51 @@ export function addGameToCollection(data, currentUser) {
 }
 
 export function removeGameFromCollectionCache(cache, collection, game, currentUser) {
-  let cacheResponse;
-
-  let operateOnCollections = collections => {
-    return collections.filter(c => c.id === collection && c.games !== undefined).map(c => {
-      let newGames = c.games.filter(g => g.id !== game);
-      return {
-        ...c,
-        games: newGames,
-        numGames: newGames.length,
-      };
-    });
-  };
-
-  try {
-    cacheResponse = cache.readQuery({
+  let queries = [
+    {
       query: ListCollectionGamesQuery,
       variables: { id: collection },
-    });
-    cache.writeQuery({
-      query: ListCollectionGamesQuery,
-      variables: { id: collection },
-      data: {
-        collections: operateOnCollections(cacheResponse.collections),
-      },
-    });
-  } catch (e) {}
+    },
+  ];
 
   if (currentUser) {
-    try {
-      cacheResponse = cache.readQuery({
+    queries.push(
+      {
         query: ListCollectionsQuery,
         variables: { createdBy: currentUser.id },
-      });
-
-      cache.writeQuery({
-        query: ListCollectionsQuery,
-        variables: { createdBy: currentUser.id },
-        data: {
-          collections: operateOnCollections(cacheResponse.collections),
-        },
-      });
-    } catch (e) {}
-
-    try {
-      cacheResponse = cache.readQuery({
+      },
+      {
         query: ListCollectionsQuery,
         variables: { createdBy: currentUser.id, game },
-      });
-      cache.writeQuery({
-        query: ListCollectionsQuery,
-        variables: { createdBy: currentUser.id, game },
-        data: {
-          collections: operateOnCollections(cacheResponse.collections),
-        },
-      });
-    } catch (e) {}
+      }
+    );
   }
+
+  queries.forEach(query => {
+    try {
+      let { collections } = cache.readQuery(query);
+      cache.writeQuery({
+        ...query,
+        data: {
+          collections: collections
+            .filter(c => {
+              return c.id !== collection || query.variables.game !== game;
+            })
+            .map(c => {
+              if (c.id !== collection || c.games === undefined) {
+                return c;
+              }
+              let newGames = c.games.filter(g => g.id !== game);
+              return {
+                ...c,
+                games: newGames,
+                numGames: newGames.length,
+              };
+            }),
+        },
+      });
+    } catch (e) {}
+  });
 }
 
 export function removeGameFromCollection(data, currentUser) {
