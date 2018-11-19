@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { FlatList, StyleSheet, ScrollView, Text, View } from 'react-native';
 import { withNavigation } from 'react-navigation';
+import Swipeout from 'react-native-swipeout';
 
-import { getCollectionGames } from '../actions/collections';
+import { getCollectionGames, removeGameFromCollection } from '../actions/collections';
 import AlertCard from '../components/AlertCard';
 import Collection from '../components/Collection';
 import Game from '../components/Game';
@@ -12,7 +13,25 @@ import Header from '../components/Header';
 import LoadingIndicator from '../components/LoadingIndicator';
 
 class GameList extends Component {
-  _renderItem = ({ item }) => <Game game={item} />;
+  static propTypes = {
+    onGameDelete: PropTypes.func.isRequired,
+  };
+
+  _renderItem = ({ item }) => {
+    let swipeBtns = [
+      {
+        text: 'Delete',
+        backgroundColor: 'red',
+        onPress: () => this.props.onGameDelete(item),
+      },
+    ];
+
+    return (
+      <Swipeout right={swipeBtns} autoClose backgroundColor="transparent">
+        <Game game={item} />
+      </Swipeout>
+    );
+  };
 
   _keyExtractor = item => item.id;
 
@@ -49,30 +68,28 @@ class GameList extends Component {
 }
 
 class CollectionDetails extends Component {
-  state = {
-    loading: true,
-    error: false,
-    results: [],
-  };
-
   static propTypes = {
     navigation: PropTypes.object.isRequired,
     getCollectionGames: PropTypes.func.isRequired,
   };
 
-  static navigationOptions = ({ navigation }) => {
+  constructor(...args) {
+    super(...args);
+
+    let { navigation } = this.props;
     let { collection } = navigation.state.params;
-    return {
-      header: null,
-      title: collection.name,
+
+    this.state = {
+      loading: true,
+      error: false,
+      results: [],
+      collection,
     };
-  };
+  }
 
   componentDidMount() {
-    let { navigation } = this.props;
-    let { id } = navigation.state.params;
     this.props
-      .getCollectionGames({ id })
+      .getCollectionGames({ id: this.state.collection.id })
       .then(items => {
         this.setState({
           error: null,
@@ -86,17 +103,33 @@ class CollectionDetails extends Component {
       });
   }
 
+  onGameDelete = item => {
+    this.props
+      .removeGameFromCollection(
+        {
+          collection: this.state.collection.id,
+          game: item.id,
+        },
+        this.props.auth.user
+      )
+      .then(() => {
+        this.setState({
+          results: this.state.results.filter(i => i.id !== item.id),
+          collection: { ...this.state.collection, numGames: this.state.collection.numGames - 1 },
+        });
+      });
+  };
+
   goToEdit = () => {
     let { navigation } = this.props;
     navigation.navigate('EditCollection', {
       id: navigation.state.params.id,
-      collection: navigation.state.params.collection,
+      collection: this.state.collection,
     });
   };
 
   render() {
-    let { navigation } = this.props;
-    let { collection } = navigation.state.params;
+    let { collection } = this.state;
 
     let { loading, error, results } = this.state;
 
@@ -112,7 +145,12 @@ class CollectionDetails extends Component {
         <View style={styles.container}>
           <Collection onPress={null} collection={collection} />
           <ScrollView contentContainerStyle={{ flex: 1 }} showsVerticalScrollIndicator>
-            <GameList loading={loading} error={error} results={results} />
+            <GameList
+              loading={loading}
+              error={error}
+              results={results}
+              onGameDelete={this.onGameDelete}
+            />
           </ScrollView>
         </View>
       </View>
@@ -128,5 +166,5 @@ const styles = StyleSheet.create({
 
 export default connect(
   ({ auth }) => ({ auth }),
-  { getCollectionGames }
+  { getCollectionGames, removeGameFromCollection }
 )(withNavigation(CollectionDetails));

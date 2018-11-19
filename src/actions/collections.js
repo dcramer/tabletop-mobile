@@ -91,18 +91,36 @@ export function addCollection(data, currentUser) {
   };
 }
 
-export function addGameToCollection(data) {
+export function addGameToCollection(data, currentUser) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      let refetchQueries = [
+        {
+          query: ListCollectionGamesQuery,
+          variables: { id: data.collection },
+        },
+      ];
+      if (currentUser) {
+        refetchQueries.push({
+          query: ListCollectionsQuery,
+          variables: { createdBy: currentUser.id, game: data.game },
+        });
+        refetchQueries.push({
+          query: ListCollectionsQuery,
+          variables: { createdBy: currentUser.id },
+        });
+      }
+
       api
         .mutate({
           mutation: AddGameToCollectionMutation,
           variables: data,
+          refetchQueries,
         })
         .then(resp => {
           let { addGameToCollection } = resp.data;
           if (addGameToCollection.ok) {
-            resolve(addCollection.collection);
+            resolve(addGameToCollection.collection, addGameToCollection.game);
             return dispatch(
               addGameToCollectionSuccess(addGameToCollection.collection, addGameToCollection.game)
             );
@@ -119,27 +137,45 @@ export function addGameToCollection(data) {
   };
 }
 
-export function removeGameFromCollection(data) {
+export function removeGameFromCollection(data, currentUser) {
   return dispatch => {
     return new Promise((resolve, reject) => {
+      let refetchQueries = [
+        {
+          query: ListCollectionGamesQuery,
+          variables: { id: data.collection },
+        },
+      ];
+      if (currentUser) {
+        refetchQueries.push({
+          query: ListCollectionsQuery,
+          variables: { createdBy: currentUser.id, game: data.game },
+        });
+        refetchQueries.push({
+          query: ListCollectionsQuery,
+          variables: { createdBy: currentUser.id },
+        });
+      }
+
       api
         .mutate({
           mutation: RemoveGameFromCollectionMutation,
           variables: data,
+          refetchQueries,
         })
         .then(resp => {
-          let { addGameToCollection } = resp.data;
-          if (addGameToCollection.ok) {
-            resolve(addCollection.collection);
+          let { removeGameFromCollection } = resp.data;
+          if (removeGameFromCollection.ok) {
+            resolve(removeGameFromCollection.collection, removeGameFromCollection.game);
             return dispatch(
               removeGameFromCollectionSuccess(
-                addGameToCollection.collection,
-                addGameToCollection.game
+                removeGameFromCollection.collection,
+                removeGameFromCollection.game
               )
             );
           } else {
-            reject(addCollection.errors);
-            return dispatch(removeGameFromCollectionFailure(addGameToCollection.errors));
+            reject(removeGameFromCollection.errors);
+            return dispatch(removeGameFromCollectionFailure(removeGameFromCollection.errors));
           }
         })
         .catch(error => {
@@ -159,6 +195,12 @@ export function updateCollection(data, currentUser) {
           variables: { id: data.collection },
         },
       ];
+      if (currentUser) {
+        refetchQueries.push({
+          query: ListCollectionsQuery,
+          variables: { createdBy: currentUser.id },
+        });
+      }
       if (data.games && currentUser) {
         refetchQueries.push(
           ...data.games.map(gId => ({

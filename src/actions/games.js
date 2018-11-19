@@ -63,6 +63,12 @@ export function updateGame(data, currentUser) {
   return dispatch => {
     return new Promise((resolve, reject) => {
       let refetchQueries = [];
+      if (currentUser) {
+        refetchQueries.push({
+          query: ListCollectionsQuery,
+          variables: { createdBy: currentUser.id },
+        });
+      }
       if (data.collections !== undefined) {
         if (currentUser) {
           refetchQueries.push({
